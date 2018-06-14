@@ -54,15 +54,12 @@
 
       mouseClick(e) {
         const coordinates = this.getClickCoordinates(e);
-        console.log(coordinates);
         const path = transformToCoordinates(this.getPath(coordinates));
         path.shift();
         path.forEach((pathPoint) => {
           this.$store.commit('addPath', pathPoint);
         });
-        console.log(path);
         $events.$emit('startPlayerMove');
-        // $events.$emit('startPlayerMove', getDirection(this.$store.state.player.player.pos, this.$store.state.player.player.path[0]));
       },
 
       getPath(coordinates) {

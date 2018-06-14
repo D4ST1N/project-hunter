@@ -3,7 +3,7 @@ const state = {
     width: null,
     height: null,
   },
-  cellSize: 64,
+  cellSize: 52,
 };
 
 const getters = {

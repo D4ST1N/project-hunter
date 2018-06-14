@@ -1,4 +1,4 @@
-export default function renderRectangle(ctx, rect, offset) {
+export default function renderRectangle(ctx, rect) {
   ctx.fillStyle = rect.color;
   ctx.fillRect(
     rect.position.x,

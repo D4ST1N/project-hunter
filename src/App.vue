@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <Map></Map>
-    <MapEditor v-if="false"></MapEditor>
-    <Player></Player>
+    <Map v-if="false"></Map>
+    <MapEditor v-if="true"></MapEditor>
+    <Player v-if="false"></Player>
   </div>
 </template>
 
@@ -47,11 +47,4 @@
 </script>
 
 <style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-  }
 </style>

@@ -1,6 +1,13 @@
+@import url('https://fonts.googleapis.com/css?family=Neucha&subset=cyrillic');
+@import "variables.scss";
+
 body {
+  font-family: 'Neucha', cursive;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   margin: 0;
   padding: 0;
+  color: $base-text-color;
 }
 
 body * {
