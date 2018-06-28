@@ -99,8 +99,8 @@
       flex-wrap: wrap;
 
       &-item {
-        width: 128px;
-        height: 64px;
+        width: 96px;
+        height: 96px;
         margin-right: 8px;
         margin-bottom: 32px;
         border-radius: 4px;

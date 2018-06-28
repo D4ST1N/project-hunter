@@ -5,7 +5,7 @@
         <header class="popup__header">
           <h2 class="popup__title">{{ title }}</h2>
           <div class="popup__close" @click="closePopup">
-            <Icon type="close" />
+            <Icon type="cancel" />
           </div>
         </header>
         <section class="popup__content">

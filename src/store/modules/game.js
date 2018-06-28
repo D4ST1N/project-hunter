@@ -3,7 +3,11 @@ const state = {
     width: null,
     height: null,
   },
-  cellSize: 52,
+  cellSize: 48,
+  editorSize: {
+    width: 1400,
+    height: 850,
+  }
 };
 
 const getters = {

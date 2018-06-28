@@ -3,7 +3,31 @@ export default {
     pointRect() {
 
     },
-    
+
+    pointPoly(px, py, vertices) {
+      let collision = false;
+      let next = 0;
+
+      for (let current = 0; current < vertices.length; current++) {
+        next = current + 1;
+
+        if (next === vertices.length) {
+          next = 0;
+        }
+
+        const vc = vertices[current];
+        const vn = vertices[next];
+
+        if (((vc.y > py && vn.y < py) || (vc.y < py && vn.y > py)) &&
+          (px < (vn.x-vc.x)*(py-vc.y) / (vn.y-vc.y)+vc.x)
+        ) {
+          collision = !collision;
+        }
+      }
+
+      return collision;
+    },
+
     squareSquare(square1, square2, area = 0) {
       return square1.pos.x - area / 2 < square2.pos.x + square2.size
              && square1.pos.x + square1.size + area / 2 > square2.pos.x

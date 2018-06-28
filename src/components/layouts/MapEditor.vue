@@ -3,23 +3,33 @@
     <canvas v-if="false" ref="map" class="layout"></canvas>
     <Sidebar />
     <Popup title="Тестовий заголовок" :show="show" @close="show = false"/>
+    <Toolbar />
+    <enlargeMap v-if="false" direction="left" />
+    <enlargeMap v-if="false" direction="right" />
+    <enlargeMap v-if="false" direction="up" />
+    <enlargeMap v-if="false" direction="down" />
   </div>
 </template>
 
 <script>
   import Popup             from '../ui/Popup';
-  import Sidebar           from '../ui/Sidebar';
+  import Sidebar           from '../../map-editor/resources/Sidebar';
+  import enlargeMap        from './parts/enlargeMap';
   import renderRectangle   from '../../utils/renderRectangle';
   import getMousePosition  from '../../utils/getMousePosition';
   import createClearMatrix from '../../utils/createClearMatrix';
   import editor            from '../../resources/mapEditor';
+  import Toolbar           from '../../map-editor/resources/Toolbar';
   import clearRectangle    from '../../utils/clearRectangle';
+  import '../../map-editor';
 
   export default {
     name: "MapEditor",
     components: {
       Popup,
       Sidebar,
+      enlargeMap,
+      Toolbar,
     },
 
     data() {
@@ -38,11 +48,11 @@
       // this.map.height = this.$store.state.game.view.height;
       // const width = Math.ceil(this.$store.state.game.view.width / this.$store.state.game.cellSize) - 1;
       // const height = Math.ceil(this.$store.state.game.view.height / this.$store.state.game.cellSize) - 1;
-      this.mapData = localStorage.getItem('editorMap')
-                     ? JSON.parse(localStorage.getItem('editorMap'))
-                     : createClearMatrix(width, height);
-      editor.init({ map: this.mapData });
-      editor.run();
+      // this.mapData = localStorage.getItem('editorMap')
+      //                ? JSON.parse(localStorage.getItem('editorMap'))
+      //                : createClearMatrix(width, height);
+      // editor.init({ map: this.mapData });
+      // editor.run();
       // this.renderMap();
       // this.map.addEventListener('click', this.mouseClick);
     },
