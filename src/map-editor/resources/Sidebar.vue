@@ -1,37 +1,55 @@
 <template>
   <div v-show="show" class="sidebar">
-    <Tiles />
+    <Tiles v-show="showTiles" />
+    <Objects v-show="showObjects" />
+    <TileSettings v-show="showTileSettings" />
   </div>
 </template>
 
 <script>
-  import Tiles   from './Tiles';
-  import $events from '../../utils/events';
+  import Tiles        from './Tiles';
+  import Objects        from './Objects';
+  import TileSettings from './TileSettings';
+  import $events      from '../../utils/events';
 
   export default {
     name: "Sidebar",
     components: {
       Tiles,
+      Objects,
+      TileSettings,
     },
 
     data() {
       return {
-        showTiles: false,
-        showObjects: false,
-        showEvents: false,
-        showTileSettings: false,
+        currentInstrument: null,
       };
     },
 
     computed: {
       show() {
-        return this.showTiles || this.showObjects || this.showEvents || this.showTileSettings;
-      }
+        return !!this.currentInstrument;
+      },
+
+      showTiles() {
+        return this.currentInstrument === 'draw';
+      },
+
+      showObjects() {
+        return this.currentInstrument === 'move';
+      },
+
+      showTileSettings() {
+        return this.currentInstrument === 'selection';
+      },
     },
 
     mounted() {
       $events.$on('selectInstrument', (instrument) => {
-        this.showTiles = instrument === 'draw';
+        this.currentInstrument = instrument;
+      });
+      $events.$on('deselectInstrument', () => {
+        this.currentInstrument = null;
       });
     }
   }
@@ -40,7 +58,7 @@
 <style lang="scss">
   .sidebar {
     position: fixed;
-    width: 460px;
+    width: 500px;
     top: 16px;
     right: 16px;
     max-height: calc(100% - 40px);

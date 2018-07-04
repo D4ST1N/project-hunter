@@ -64,6 +64,18 @@
                 }
               },
               {
+                name: 'move',
+                label: 'Об\'єкти',
+                icon: 'move',
+
+                action(button) {
+                  this.deselectInstrumentsButton();
+                  this.$set(button, 'selected', true);
+                  this.$store.commit('selectInstrument', button.name);
+                  $events.$emit('selectInstrument', button.name);
+                }
+              },
+              {
                 name: 'picker',
                 label: 'Пипетка',
                 icon: 'dropper',

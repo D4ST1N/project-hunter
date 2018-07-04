@@ -25,6 +25,10 @@
       };
     },
 
+    mounted() {
+      this.selectTile(tiles[0]);
+    },
+
     methods: {
       selectTile(tile) {
         const selectedTile = this.tiles.find(t => t.selected);
@@ -34,6 +38,7 @@
         }
 
         this.$set(tile, 'selected', true);
+        this.$store.commit('selectTileForDrawing', tile.name);
       }
     }
   }

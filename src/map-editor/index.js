@@ -5,6 +5,9 @@ import collision            from '../utils/collision';
 import findLast             from 'lodash/findLast';
 import $events              from '../utils/events';
 import createArray          from '../utils/createArray';
+import objects              from '../resources/objects';
+import tiles                from '../resources/tiles';
+import createClearMatrix    from '../utils/createClearMatrix';
 
 const gameMapTest = [
   [
@@ -146,6 +149,9 @@ const gameMapTest = [
 const gameMapData = localStorage.getItem('editorMap')
                     ? JSON.parse(localStorage.getItem('editorMap'))
                     : gameMapTest;
+const mapObjectsData = localStorage.getItem('editorMapObjects')
+                       ? JSON.parse(localStorage.getItem('editorMapObjects'))
+                       : [];
 const gameConfig = {
   tileSize: 48,
   offset: {
@@ -158,18 +164,23 @@ const defaultTile = () => ({
   z: 0,
   height: 48,
 });
+let keys;
 
 class Editor extends Phaser.Scene {
   constructor() {
     super();
 
     this.map = [];
+    this.mapObjects = [];
     this.clickStart = false;
+    this.depthMatrix = [];
 
     $events.$on('enlargeMap', this.enlargeMap.bind(this));
     $events.$on('decreaseMap', this.decreaseMap.bind(this));
     $events.$on('selectInstrument', this.selectInstrument.bind(this));
     $events.$on('saveMap', this.saveMap);
+    $events.$on('zUp', this.zUp);
+    $events.$on('zDown', this.zDown);
   }
 
   getDefaultOffset() {
@@ -191,6 +202,7 @@ class Editor extends Phaser.Scene {
 
   saveMap() {
     localStorage.setItem('editorMap', JSON.stringify(gameMapData));
+    localStorage.setItem('editorMapObjects', JSON.stringify(mapObjectsData));
   }
 
   selectInstrument(instrument) {
@@ -236,6 +248,8 @@ class Editor extends Phaser.Scene {
       gameConfig.offset.x -= gameConfig.tileSize;
       gameConfig.offset.y -= gameConfig.tileSize / 2;
     }
+
+    this.createDepthMatrix();
   }
 
   decreaseMap(direction) {
@@ -274,6 +288,101 @@ class Editor extends Phaser.Scene {
       gameConfig.offset.x += gameConfig.tileSize;
       gameConfig.offset.y += gameConfig.tileSize / 2;
     }
+
+    this.createDepthMatrix();
+  }
+
+  createDepthMatrix() {
+    const height = this.map.length;
+    const width = this.map[0].length;
+    const matrix = createClearMatrix(height, width, 0);
+    const step = 5;
+    let iterator = 0;
+    const maxLength = Math.max(width, height);
+
+    for (let k = 0; k <= 2 * (maxLength - 1); ++k) {
+      for (let y = height - 1; y >= 0; --y) {
+        let x = k - y;
+
+        if (x >= 0 && x < width) {
+          matrix[y][x] = step * iterator;
+          iterator++;
+        }
+      }
+    }
+
+    this.depthMatrix = matrix;
+  }
+
+  zUp() {
+    store.commit('selectedTileUp');
+  }
+
+  zDown() {
+    store.commit('selectedTileDown');
+  }
+
+  moveSelection(direction) {
+    const selectedTile = store.getters.tile;
+
+    if (!selectedTile) {
+      return;
+    }
+    const position = {
+      x: selectedTile.x,
+      y: selectedTile.y,
+    };
+    let newPosition = position;
+    let newSelectedTile;
+
+    if (!this.highlight.visible) {
+      return;
+    }
+
+    if (direction === 'left' && position.x > 0) {
+      newPosition = {
+        x: position.x - 1,
+        y: position.y,
+      };
+    }
+
+    if (direction === 'right' && position.x < gameMapData[0].length - 1) {
+      newPosition = {
+        x: position.x + 1,
+        y: position.y,
+      };
+    }
+
+    if (direction === 'up' && position.y > 0) {
+      newPosition = {
+        x: position.x,
+        y: position.y - 1,
+      };
+    }
+
+    if (direction === 'down' && position.y < gameMapData.length - 1) {
+      newPosition = {
+        x: position.x,
+        y: position.y + 1,
+      };
+    }
+
+    newSelectedTile = gameMapData[newPosition.y][newPosition.x];
+    this.highlightedTile = this.map[newPosition.y][newPosition.x];
+    store.commit('selectTile', {
+      tile: newSelectedTile,
+      x: newPosition.x,
+      y: newPosition.y,
+      depth: this.highlightedTile.depth,
+    });
+  }
+
+  getDecor(decorName) {
+    return objects.scenery.find(decor => decor.name === decorName);
+  }
+
+  getTile(tileName) {
+    return tiles.find(tile => tile.name === tileName);
   }
 
   preload() {
@@ -282,7 +391,11 @@ class Editor extends Phaser.Scene {
     this.load.image('grass', '/img/tiles/grass.png');
     this.load.image('highlight', '/img/tiles/highlight.png');
     this.load.image('empty', '/img/tiles/empty.png');
-    this.tiles = ['wall', 'grass', 'empty'];
+    this.load.image('empty_cube', '/img/tiles/empty.png');
+    this.load.image('water', '/img/tiles/water.png');
+    objects.scenery.forEach((decor) => {
+      this.load.image(decor.miniature, `/img/objects/${decor.miniature}.png`);
+    });
   }
 
   create() {
@@ -291,19 +404,51 @@ class Editor extends Phaser.Scene {
     this.highlight.visible = false;
     this.cursors = this.input.keyboard.createCursorKeys();
     this.getDefaultOffset();
+    keys = {
+      left: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT),
+      right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT),
+      up: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP),
+      down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN),
+    };
   }
 
   update() {
-    if (this.cursors.left.isDown) {
-      gameConfig.offset.x -= 4;
-    } else if (this.cursors.right.isDown) {
-      gameConfig.offset.x += 4;
-    }
+    if (store.getters.instrument === 'selection') {
+      if (Phaser.Input.Keyboard.JustDown(keys.left)) {
+        this.moveSelection('left');
+      }
 
-    if (this.cursors.up.isDown) {
-      gameConfig.offset.y -= 4;
-    } else if (this.cursors.down.isDown) {
-      gameConfig.offset.y += 4;
+      if (Phaser.Input.Keyboard.JustDown(keys.right)) {
+        this.moveSelection('right');
+      }
+
+      if (Phaser.Input.Keyboard.JustDown(keys.up)) {
+        if (keys.up.ctrlKey) {
+          this.zUp();
+        } else {
+          this.moveSelection('up');
+        }
+      }
+
+      if (Phaser.Input.Keyboard.JustDown(keys.down)) {
+        if (keys.down.ctrlKey) {
+          this.zDown();
+        } else {
+          this.moveSelection('down');
+        }
+      }
+    } else {
+      if (this.cursors.left.isDown) {
+        gameConfig.offset.x -= 4;
+      } else if (this.cursors.right.isDown) {
+        gameConfig.offset.x += 4;
+      }
+
+      if (this.cursors.up.isDown) {
+        gameConfig.offset.y -= 4;
+      } else if (this.cursors.down.isDown) {
+        gameConfig.offset.y += 4;
+      }
     }
 
     if (this.input.activePointer.isDown) {
@@ -321,10 +466,28 @@ class Editor extends Phaser.Scene {
         return this.addIsometricTile(cell.tile, cellIndex, rowIndex);
       });
     });
+    this.mapObjects = mapObjectsData.map((decor) => {
+      const gameBlock = this.map[decor.block.y][decor.block.x];
+      const decorData = this.getDecor(decor.name);
+
+      return this.add.sprite(
+        gameBlock.x - decorData.offset.x,
+        gameBlock.y - decorData.offset.y,
+        decorData.miniature
+      );
+    });
+    this.createDepthMatrix();
+  }
+
+  addDecor(block, decor) {
+    this.mapObjects.push(this.add.sprite(
+      block.x - decor.offset.x,
+      block.y - decor.offset.y,
+      decor.miniature
+    ));
   }
 
   updateScene() {
-    let counter = 0;
     this.map.forEach((mapRow, y) => {
       mapRow.forEach((cell, x) => {
         const originalPosition = {
@@ -336,16 +499,28 @@ class Editor extends Phaser.Scene {
 
         cell.x = isometricPosition.x + gameConfig.offset.x;
         cell.y = isometricPosition.y + gameConfig.offset.y - tile.z + tile.height;
-        cell.depth = counter;
-        counter += 2;
+        cell.depth = this.depthMatrix[y][x];
       });
     });
+
+    this.updateScenery();
 
     if (this.highlightedTile) {
       this.highlight.x = this.highlightedTile.x;
       this.highlight.y = this.highlightedTile.y;
       this.highlight.depth = this.highlightedTile.depth + 1;
     }
+  }
+
+  updateScenery() {
+    mapObjectsData.forEach((decor, index) => {
+      const decorData = this.getDecor(decor.name);
+      const gameBlock = this.map[decor.block.y][decor.block.x];
+
+      this.mapObjects[index].x = gameBlock.x - decorData.offset.x;
+      this.mapObjects[index].y = gameBlock.y - decorData.offset.y;
+      this.mapObjects[index].depth = gameBlock.depth + 1;
+    });
   }
 
   addIsometricTile(tile, x, y) {
@@ -422,17 +597,43 @@ class Editor extends Phaser.Scene {
           const tile = gameMapData[y][x];
 
           if (store.getters.instrument === 'draw') {
-            const currentIndex = this.tiles.indexOf(tile.tile);
-            let newIndex = currentIndex === this.tiles.length - 1 ? 0 : currentIndex + 1;
+            const tileData = this.getTile(store.getters.drawTile);
+            tile.tile = store.getters.drawTile;
+            tile.height = tileData.height;
 
-            tile.tile = this.tiles[newIndex];
+            if (store.state.editor.showEmptyTiles && tile.tile === 'empty') {
+              tile.tile = 'empty_cube';
+            }
+
             this.map[y][x].setTexture(tile.tile);
           } else if (store.getters.instrument === 'selection') {
             this.highlightedTile = this.map[y][x];
             this.highlight.visible = true;
+            store.commit('selectTile', {
+              tile,
+              x,
+              y,
+              depth: this.highlightedTile.depth,
+            });
+          } else if (store.getters.instrument === 'move') {
+            const decor = this.getDecor(store.getters.decor);
+            const sprite = this.map[y][x];
+            this.addDecor(sprite, decor);
+            mapObjectsData.push({
+              name:          decor.name,
+              block:         { x, y },
+              size:          decor.grid.size,
+              matrix:        decor.grid.matrix,
+              startPosition: decor.grid.startPosition
+            });
           }
 
           return true;
+        } else {
+          if (store.getters.instrument === 'selection') {
+            this.highlight.visible = false;
+            store.commit('selectTile', null);
+          }
         }
 
         return false;

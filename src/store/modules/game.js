@@ -13,6 +13,10 @@ const state = {
 const getters = {
   view(state) {
     return state.view;
+  },
+
+  size(state) {
+    return state.cellSize;
   }
 };
 
