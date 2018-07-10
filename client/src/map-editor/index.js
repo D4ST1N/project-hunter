@@ -563,7 +563,7 @@ class Editor extends Phaser.Scene {
             }
           }
         });
-        map.scenery = store.getters.objectsData;
+        map.scenery = store.getters.getMap.scenery;
 
         path.shift();
       }
@@ -587,7 +587,6 @@ const config = {
 };
 
 $events.$on('loadMap', (mapData) => {
-  console.log(mapData);
   map = mapData.content;
   store.commit('selectMap', map.info.fileName);
   const game = new Phaser.Game(config);
