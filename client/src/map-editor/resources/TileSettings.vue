@@ -81,7 +81,7 @@
       },
 
       getDecoration() {
-        const objectsData = this.$store.getters.objectsData;
+        const objectsData = this.$store.getters.getMap.scenery;
         const tile = this.$store.getters.tile;
 
         return objectsData.filter(decor => decor.block.x === tile.x && decor.block.y === tile.y);

@@ -104,7 +104,7 @@ export default {
       },
       offset: {
         x: 0,
-        y: 150,
+        y: 126,
       },
       isWalkable: false,
       folders: [
@@ -134,7 +134,7 @@ export default {
       },
       offset: {
         x: 0,
-        y: 130,
+        y: 106,
       },
       isWalkable: false,
       folders: [
@@ -164,7 +164,7 @@ export default {
       },
       offset: {
         x: 0,
-        y: 120,
+        y: 96,
       },
       isWalkable: false,
       folders: [
@@ -194,7 +194,7 @@ export default {
       },
       offset: {
         x: 0,
-        y: 100,
+        y: 76,
       },
       isWalkable: false,
       folders: [
@@ -224,7 +224,7 @@ export default {
       },
       offset: {
         x: 0,
-        y: 185,
+        y: 161,
       },
       isWalkable: false,
       folders: [
@@ -254,7 +254,7 @@ export default {
       },
       offset: {
         x: 0,
-        y: 40,
+        y: 16,
       },
       isWalkable: false,
       folders: [
@@ -284,7 +284,7 @@ export default {
       },
       offset: {
         x: -28,
-        y: 52,
+        y: 28,
       },
       isWalkable: false,
       folders: [
@@ -315,7 +315,7 @@ export default {
       },
       offset: {
         x: -10,
-        y: 80,
+        y: 56,
       },
       isWalkable: false,
       folders: [
@@ -346,7 +346,7 @@ export default {
       },
       offset: {
         x: 0,
-        y: 24,
+        y: 0,
       },
       isWalkable: false,
       folders: [
@@ -376,7 +376,7 @@ export default {
       },
       offset: {
         x: 0,
-        y: 28,
+        y: 4,
       },
       isWalkable: false,
       folders: [
@@ -406,7 +406,7 @@ export default {
       },
       offset: {
         x: -10,
-        y: 88,
+        y: 64,
       },
       isWalkable: false,
       folders: [
@@ -437,7 +437,7 @@ export default {
       },
       offset: {
         x: -10,
-        y: 128,
+        y: 104,
       },
       isWalkable: false,
       folders: [
@@ -469,7 +469,7 @@ export default {
       },
       offset: {
         x: -12,
-        y: 72,
+        y: 48,
       },
       isWalkable: false,
       folders: [
@@ -500,7 +500,7 @@ export default {
       },
       offset: {
         x: -28,
-        y: 88,
+        y: 64,
       },
       isWalkable: false,
       folders: [
@@ -532,7 +532,7 @@ export default {
       },
       offset: {
         x: -14,
-        y: 84,
+        y: 60,
       },
       isWalkable: false,
       folders: [
@@ -563,7 +563,7 @@ export default {
       },
       offset: {
         x: -14,
-        y: 112,
+        y: 88,
       },
       isWalkable: false,
       folders: [
@@ -595,7 +595,7 @@ export default {
       },
       offset: {
         x: -2,
-        y: 40,
+        y: 16,
       },
       isWalkable: false,
       folders: [
@@ -626,7 +626,7 @@ export default {
       },
       offset: {
         x: 0,
-        y: 24,
+        y: 0,
       },
       isWalkable: true,
       folders: [
@@ -656,7 +656,7 @@ export default {
       },
       offset: {
         x: 0,
-        y: 24,
+        y: 0,
       },
       isWalkable: true,
       folders: [
@@ -681,12 +681,12 @@ export default {
       miniature: 'player',
       label: 'Гравець',
       size: {
-        width: 76,
-        height: 120,
+        width: 96,
+        height: 180,
       },
       offset: {
-        x: 8,
-        y: 78,
+        x: 0,
+        y: 0,
       },
       isWalkable: true,
       folders: [
