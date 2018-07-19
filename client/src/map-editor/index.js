@@ -11,13 +11,10 @@ import tiles                 from '../resources/tiles';
 import createClearMatrix     from '../utils/createClearMatrix';
 import createPassageMatrix   from '../utils/createPassageMatrix';
 import API                   from '../services/API';
-import getIsometricDirection from '../utils/getIsometricDirection';
-import getBorderCoordinates  from '../utils/getBorderCoordinates';
-import getYCoordinate        from '../utils/getYCoordinate';
-import getXCoordinate        from '../utils/getXCoordinate';
-import toFixed               from '../utils/toFixed';
+import PlayerPrototype       from '../resources/entities/Player';
 
 let map;
+let Player;
 const gameConfig = {
   tileSize: 48,
   offset: {
@@ -44,6 +41,7 @@ class Editor extends Phaser.Scene {
     this.player = null;
     this.depthMatrix = [];
     this.path = [];
+    this.isMooving = false;
 
     $events.$on('enlargeMap', this.enlargeMap.bind(this));
     $events.$on('decreaseMap', this.decreaseMap.bind(this));
@@ -56,6 +54,12 @@ class Editor extends Phaser.Scene {
       store.commit('removeDecor', index);
       this.mapObjects[index].destroy();
       this.mapObjects.splice(index, 1);
+    });
+    $events.$on('moveStarted', () => {
+      this.isMooving = true;
+    });
+    $events.$on('moveEnded', () => {
+      this.isMooving = false;
     });
   }
 
@@ -77,13 +81,13 @@ class Editor extends Phaser.Scene {
   }
 
   saveMap() {
-    console.log(store.state.editor.currentMap);
-    API().post('/saveMap', {
-      name: store.state.editor.currentMap,
-      content: map
-    }).then((response) => {
-      console.log(response);
-    }).catch(console.error);
+    API()
+      .post('/saveMap', {
+        name:    store.state.editor.currentMap,
+        content: map
+      })
+      .then(console.log)
+      .catch(console.error);
   }
 
   updateState() {
@@ -201,7 +205,6 @@ class Editor extends Phaser.Scene {
     }
 
     this.depthMatrix = matrix;
-    this.maxDepth = matrix[matrix.length - 1][matrix[0].length - 1];
   }
 
   zUp() {
@@ -299,6 +302,10 @@ class Editor extends Phaser.Scene {
   create() {
     this.createScene();
     this.updateState();
+    Player = new PlayerPrototype(this.player, this.getDecor('player'));
+    Player.setSize(gameConfig.tileSize);
+    Player.setGameMap(this.map);
+    Player.setInitialBlock(store.getters.getPlayer.block);
     this.highlight = this.add.sprite(0, 0, 'highlight');
     this.highlight.visible = false;
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -358,43 +365,7 @@ class Editor extends Phaser.Scene {
     }
 
     this.updateScene();
-
-    if (this.path.length > 0) {
-      const nextPoint = this.path[0];
-      const player = store.getters.getPlayer;
-      player.block = nextPoint.block;
-      this.player.depth = this.map[player.block.y][player.block.x].depth + 2;
-
-      if (this.path.length > 1) {
-        this.player.depth = Math.max(this.map[this.path[1].block.y][this.path[1].block.x].depth, this.player.depth);
-      }
-
-      if (Math.abs(this.player.x - nextPoint.pos.x) < gameConfig.playerSpeed
-        && Math.abs(this.player.y - nextPoint.pos.y) < gameConfig.playerSpeed
-      ) {
-        this.player.x = nextPoint.pos.x;
-        this.player.y = nextPoint.pos.y;
-        this.path.shift();
-      } else {
-        let xCoordinate;
-        let yCoordinate;
-
-        if (Math.abs(this.player.x - nextPoint.pos.x) > Math.abs(this.player.y - nextPoint.pos.y)) {
-          xCoordinate = nextPoint.pos.x > this.player.x
-                        ? this.player.x + gameConfig.playerSpeed
-                        : this.player.x - gameConfig.playerSpeed;
-          yCoordinate = getYCoordinate(xCoordinate, this.player, nextPoint.pos);
-        } else {
-          yCoordinate = nextPoint.pos.y > this.player.y
-                        ? this.player.y + gameConfig.playerSpeed
-                        : this.player.y - gameConfig.playerSpeed;
-          xCoordinate = getXCoordinate(yCoordinate, this.player, nextPoint.pos);
-        }
-
-        this.player.x = toFixed(xCoordinate, 1);
-        this.player.y = toFixed(yCoordinate, 1);
-      }
-    }
+    Player.update();
   }
 
   createScene() {
@@ -409,8 +380,6 @@ class Editor extends Phaser.Scene {
       const blockData = map.geo[decor.block.y][decor.block.x];
 
       if (decor.name === 'player') {
-        console.log(gameBlock.x, gameBlock.y);
-        console.log(decorData.offset.x, decorData.offset.y);
         this.player = this.add.sprite(
           gameBlock.x,
           gameBlock.y - blockData.height / 2,
@@ -601,9 +570,7 @@ class Editor extends Phaser.Scene {
   }
 
   findPath(x, y) {
-    const player = store.getters.getPlayer;
-    const playerData = this.getDecor('player');
-    const startPosition = player.block;
+    const startPosition = Player.block;
 
     if (this.hasChanges) {
       this.matrix = createPassageMatrix(store.getters.getMap.geo, store.getters.getMap.scenery);
@@ -611,83 +578,22 @@ class Editor extends Phaser.Scene {
 
     const grid = new PF.Grid(this.matrix);
     const finder = new PF.AStarFinder();
-    const path = finder.findPath(startPosition.x, startPosition.y, x, y, grid);
-    const pathBreakPoints = [];
+    const path = finder.findPath(startPosition.x, startPosition.y, x, y, grid).map((pathPoint) => ({
+      x: pathPoint[0],
+      y: pathPoint[1],
+    }));
+    path.shift();
 
-    path.forEach((pathPoint, index) => {
-      const x = pathPoint[0];
-      const y = pathPoint[1];
-      const block = this.map[y][x];
-      const blockData = map.geo[y][x];
-      const blockCenter = {
-        x: block.x,
-        y: block.y - blockData.height / 2,
-      };
+    const playerMove = () => {
+      Player.move(path);
+    };
 
-      if (index > 0) {
-        const prevPathPoint = path[index - 1];
-        const direction = getIsometricDirection({
-          x,
-          y,
-        }, {
-          x: prevPathPoint[0],
-          y: prevPathPoint[1],
-        });
-        const borderCoordinates = getBorderCoordinates(blockCenter, direction, gameConfig.tileSize);
-        pathBreakPoints.push({
-          type: 'border',
-          block: { x, y },
-          pos: {
-            x: borderCoordinates.x,
-            y: borderCoordinates.y,
-          },
-        });
-      }
-
-      pathBreakPoints.push({
-        type: 'center',
-        block: { x, y },
-        pos: {
-          x: blockCenter.x,
-          y: blockCenter.y,
-        },
-      });
-
-      if (path.length > index + 1) {
-        const nextPathPoint = path[index + 1];
-        const direction = getIsometricDirection({
-          x,
-          y,
-        }, {
-          x: nextPathPoint[0],
-          y: nextPathPoint[1],
-        });
-        const borderCoordinates = getBorderCoordinates(blockCenter, direction, gameConfig.tileSize);
-        pathBreakPoints.push({
-          type: 'border',
-          block: { x, y },
-          pos: {
-            x: borderCoordinates.x,
-            y: borderCoordinates.y,
-          },
-        });
-      }
-    });
-
-    console.log(pathBreakPoints);
-    this.path = pathBreakPoints;
-    // this.player.x = this.path[0].pos.x;
-    // this.player.y = this.path[0].pos.y;
-    // this.path.shift();
-    //
-    // const intervalId = setInterval(() => {
-    //   if (this.path.length === 0) {
-    //     clearInterval(intervalId);
-    //   } else {
-    //     // debugger;
-    //
-    //   }
-    // }, 50);
+    if (this.isMooving) {
+      $events.$on('moveEnded', playerMove);
+    } else {
+      playerMove();
+      $events.$off('moveEnded', playerMove);
+    }
   }
 }
 
