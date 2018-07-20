@@ -7,6 +7,7 @@
     <OpenMaps />
     <ResourceLoader />
     <CreateNewMap />
+    <Quests />
   </div>
 </template>
 
@@ -17,6 +18,7 @@
   import MeetPopup         from '../../map-editor/resources/MeetPopup';
   import MainMenu          from '../../map-editor/resources/MainMenu';
   import CreateNewMap      from '../../map-editor/resources/CreateNewMap';
+  import Quests            from '../../map-editor/resources/Quests';
   import renderRectangle   from '../../utils/renderRectangle';
   import getMousePosition  from '../../utils/getMousePosition';
   import Toolbar           from '../../map-editor/resources/Toolbar';
@@ -33,6 +35,7 @@
       MeetPopup,
       CreateNewMap,
       MainMenu,
+      Quests,
     },
 
     data() {

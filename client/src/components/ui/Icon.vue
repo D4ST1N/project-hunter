@@ -9,6 +9,10 @@
       type: {
         type: String,
       },
+      size: {
+        type: String,
+        default: 'medium'
+      },
     },
 
     computed: {
@@ -16,6 +20,7 @@
         return {
           icon: true,
           [`icon--${this.type}`]: !!this.type,
+          [`icon--${this.size}`]: true,
         };
       },
     },
@@ -39,12 +44,30 @@
   }
 
   .icon {
-    width: 32px;
-    height: 32px;
     display: inline-flex;
     position: relative;
     z-index: 1;
     pointer-events: none;
+
+    &--medium {
+      width: 32px;
+      height: 32px;
+    }
+
+    &--small {
+      width: 24px;
+      height: 24px;
+    }
+
+    &--tiny {
+      width: 16px;
+      height: 16px;
+    }
+
+    &--big {
+      width: 48px;
+      height: 48px;
+    }
 
     &--cancel {
       @include icon('cancel');
@@ -104,6 +127,10 @@
 
     &--menu {
       @include icon('menu');
+    }
+
+    &--scroll {
+      @include icon('scroll');
     }
 
     &--search {

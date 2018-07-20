@@ -3,13 +3,15 @@
     <Tiles v-show="showTiles" />
     <Objects v-show="showObjects" />
     <TileSettings v-show="showTileSettings" />
+    <QuestEditor v-show="showQuestEditor" />
   </div>
 </template>
 
 <script>
   import Tiles        from './Tiles';
-  import Objects        from './Objects';
+  import Objects      from './Objects';
   import TileSettings from './TileSettings';
+  import QuestEditor  from '../../quest-editor/QuestEditor';
   import $events      from '../../utils/events';
 
   export default {
@@ -18,6 +20,7 @@
       Tiles,
       Objects,
       TileSettings,
+      QuestEditor,
     },
 
     data() {
@@ -28,7 +31,7 @@
 
     computed: {
       show() {
-        return this.showTiles || this.showObjects || this.showTileSettings;
+        return this.showTiles || this.showObjects || this.showTileSettings || this.showQuestEditor;
       },
 
       showTiles() {
@@ -42,6 +45,10 @@
       showTileSettings() {
         return this.currentInstrument === 'selection';
       },
+
+      showQuestEditor() {
+        return this.currentInstrument === 'quests';
+      }
     },
 
     mounted() {

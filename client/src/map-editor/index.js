@@ -12,6 +12,8 @@ import createClearMatrix     from '../utils/createClearMatrix';
 import createPassageMatrix   from '../utils/createPassageMatrix';
 import API                   from '../services/API';
 import PlayerPrototype       from '../resources/entities/Player';
+import Quest                 from '../resources/entities/Quest';
+import test                  from '../resources/quests/test';
 
 let map;
 let Player;
@@ -296,7 +298,6 @@ class Editor extends Phaser.Scene {
     });
     this.load.image('highlight', '/img/tiles/highlight.png');
     this.load.image('empty_cube', '/img/tiles/empty_cube.png');
-    this.load.image('dot', '/img/tiles/dot.png');
   }
 
   create() {
@@ -317,6 +318,7 @@ class Editor extends Phaser.Scene {
       down: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN),
     };
     this.matrix = createPassageMatrix(map.geo, map.scenery);
+    new Quest(test);
   }
 
   update() {

@@ -1,7 +1,7 @@
 <template>
   <button :class="buttonClass" @click="buttonClick">
     <slot name="before"></slot>
-    {{ text }}
+    <span v-if="text" class="button__text">{{ text }}</span>
     <slot name="after"></slot>
   </button>
 </template>
@@ -46,6 +46,7 @@
 <style lang="scss">
   .button {
     display: inline-flex;
+    align-items: center;
     padding: 8px 16px;
     border: 0;
     line-height: 1;
@@ -54,7 +55,6 @@
     color: #fff;
     cursor: pointer;
     margin-right: 8px;
-    transition: all .375s;
     background: linear-gradient(to bottom, rgba(30,136,229 ,1), rgba(25,118,210 ,1));
     box-shadow: 2px 2px 8px 0 rgba(13,71,161 ,.75);
 
@@ -134,6 +134,17 @@
 
     &--tiny {
       font-size: 14px;
+    }
+
+    &__text {
+
+      &:not(:first-child) {
+        margin-left: 8px;
+      }
+
+      &:not(:last-child) {
+        margin-right: 8px;
+      }
     }
   }
 </style>

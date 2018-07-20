@@ -15,8 +15,6 @@ export default class Player {
     this.pathNodes = [];
     this.block = null;
     this.map = store.getters.getMap;
-    this.prevBlock = this.block;
-    this.nextBlock = null;
   }
 
   setGameMap(map) {
