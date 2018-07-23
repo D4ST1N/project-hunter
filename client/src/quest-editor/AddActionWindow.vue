@@ -61,7 +61,7 @@
 
     &__content {
       position: fixed;
-      background: rgba(96,125,139 ,.6);
+      background: rgba(96,125,139 ,.8);
       top: 20px;
       right: 530px;
       padding: 10px;

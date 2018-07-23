@@ -303,10 +303,14 @@ class Editor extends Phaser.Scene {
   create() {
     this.createScene();
     this.updateState();
-    Player = new PlayerPrototype(this.player, this.getDecor('player'));
-    Player.setSize(gameConfig.tileSize);
-    Player.setGameMap(this.map);
-    Player.setInitialBlock(store.getters.getPlayer.block);
+
+    if (this.player) {
+      Player = new PlayerPrototype(this.player, this.getDecor('player'));
+      Player.setSize(gameConfig.tileSize);
+      Player.setGameMap(this.map);
+      Player.setInitialBlock(store.getters.getPlayer.block);
+    }
+
     this.highlight = this.add.sprite(0, 0, 'highlight');
     this.highlight.visible = false;
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -367,7 +371,10 @@ class Editor extends Phaser.Scene {
     }
 
     this.updateScene();
-    Player.update();
+
+    if (Player) {
+      Player.update();
+    }
   }
 
   createScene() {
@@ -572,6 +579,10 @@ class Editor extends Phaser.Scene {
   }
 
   findPath(x, y) {
+    if (!Player) {
+      return;
+    }
+
     const startPosition = Player.block;
 
     if (this.hasChanges) {
