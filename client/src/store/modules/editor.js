@@ -5,10 +5,15 @@ const state = {
   drawTile: null,
   drawObject: null,
   showEmptyTiles: true,
-  map: null
+  map: null,
+  disableInput: false
 };
 
 const getters = {
+  inputDisable(state) {
+    return state.disableInput;
+  },
+
   tile(state) {
     return state.selectedTile;
   },
@@ -41,6 +46,14 @@ const getters = {
 const mutations = {
   selectMap(state, mapName) {
     state.currentMap = mapName;
+  },
+
+  disableInput(state) {
+    state.disableInput = true;
+  },
+
+  enableInput(state) {
+    state.disableInput = false;
   },
 
   selectTile(state, tile) {

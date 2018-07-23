@@ -51,7 +51,6 @@
 </template>
 
 <script>
-  import Button         from '../../components/ui/Button';
   import $events        from '../../utils/events';
   import tiles          from '../../resources/tiles';
   import '../../assets/styles/popup.scss';
@@ -59,9 +58,6 @@
 
   export default {
     name: "CreateNewMap",
-    components: {
-      Button,
-    },
 
     data() {
       return {

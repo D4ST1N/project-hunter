@@ -10,7 +10,7 @@
             :class="{'open-maps__map': true, 'open-maps__map--checked': checked === map.name }"
             @click="click(map)"
           >
-            <Icon type="file" class="open-maps__map-icon"></Icon>
+            <Icon type="file" size="large" class="open-maps__map-icon"></Icon>
             {{ map.content.info.name }}
           </div>
         </div>
@@ -25,17 +25,11 @@
 
 <script>
   import API from '../../services/API';
-  import Icon from '../../components/ui/Icon';
-  import Button from '../../components/ui/Button';
   import $events from '../../utils/events';
   import '../../assets/styles/popup.scss';
 
   export default {
     name: "OpenMaps",
-    components: {
-      Icon,
-      Button,
-    },
 
     data() {
       return {

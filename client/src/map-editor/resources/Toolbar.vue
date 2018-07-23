@@ -18,8 +18,6 @@
 </template>
 
 <script>
-  import Button            from '../../components/ui/Button';
-  import Icon              from '../../components/ui/Icon';
   import $events           from '../../utils/events';
   import EnlargeMapDialog  from './EnlargeMapDialog';
   import DecreaseMapDialog from './DecreaseMapDialog';
@@ -28,8 +26,6 @@
   export default {
     name: "Toolbar",
     components: {
-      Button,
-      Icon,
       EnlargeMapDialog,
       DecreaseMapDialog,
     },

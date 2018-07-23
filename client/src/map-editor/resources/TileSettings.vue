@@ -26,7 +26,7 @@
             :class="{ 'objects__item': true, 'objects__item--selected': decor.selected }"
             :style="{ 'background-image': `url(/img/objects/${decor.name}.png)` }"
           >
-            <Icon class="tile-settings__remove-decor" type="close" @iconClick="removeDecor(decor)"/>
+            <Icon class="tile-settings__remove-decor" type="close" size="small" @iconClick="removeDecor(decor)"/>
             <span class="objects__item-label">{{ decor.name }}</span>
           </div>
         </div>
@@ -36,16 +36,10 @@
 </template>
 
 <script>
-  import Button  from '../../components/ui/Button';
-  import Icon    from '../../components/ui/Icon';
   import $events from '../../utils/events';
 
   export default {
     name: "TileSettings",
-    components: {
-      Button,
-      Icon,
-    },
 
     computed: {
       showInfo() {

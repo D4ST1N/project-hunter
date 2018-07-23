@@ -4,14 +4,14 @@
     <div class="objects__search">
       <input type="text" class="objects__search-input" title="search">
       <Button v-show="showCancel" class="objects__search-button">
-        <Icon slot="before" type="close" class="objects__search-icon" />
+        <Icon slot="before" type="close" size="small" class="objects__search-icon" />
       </Button>
-      <Icon type="search" class="objects__search-icon objects__search-icon--right" />
+      <Icon type="search" size="small" class="objects__search-icon objects__search-icon--right" />
     </div>
     <div class="objects__container">
       <div v-show="showReturn" class="objects__return">
         <Button type="transparent" class="objects__return-button" @buttonClick="back">
-          <Icon slot="before" type="return" class="objects__return-icon" />
+          <Icon slot="before" type="return" size="huge" class="objects__return-icon" />
         </Button>
         <div class="objects__folder-name">
           Назад
@@ -22,7 +22,7 @@
         :key="folder.name"
         class="objects__folder"
         @click="selectFolder(folder.name)">
-        <Icon :type="isFolderEmpty(folder.name) ? 'folder_empty' : 'folder'" class="objects__folder-icon" />
+        <Icon :type="isFolderEmpty(folder.name) ? 'folder_empty' : 'folder'" size="huge" class="objects__folder-icon" />
         <div class="objects__folder-name">
           {{ folder.label }}
           <span class="objects__scenery-count">{{ sceneryCount(folder.name) }}</span>
@@ -42,16 +42,10 @@
 </template>
 
 <script>
-  import Button from '../../components/ui/Button';
-  import Icon from '../../components/ui/Icon';
   import objects from '../../resources/objects';
 
   export default {
     name: 'Objects',
-    components: {
-      Icon,
-      Button,
-    },
 
     data() {
       return {

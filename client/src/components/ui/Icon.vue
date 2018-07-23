@@ -45,8 +45,6 @@
 
   .icon {
     display: inline-flex;
-    position: relative;
-    z-index: 1;
     pointer-events: none;
 
     &--medium {
@@ -67,6 +65,16 @@
     &--big {
       width: 48px;
       height: 48px;
+    }
+
+    &--large {
+      width: 64px;
+      height: 64px;
+    }
+
+    &--huge {
+      width: 96px;
+      height: 96px;
     }
 
     &--cancel {
@@ -147,6 +155,18 @@
 
     &--map_mono {
       @include monoIcon('map_mono');
+    }
+
+    &--arrow_down {
+      @include monoIcon('arrow_down');
+    }
+
+    &--arrow_up {
+      @include monoIcon('arrow_up');
+    }
+
+    &--select_arrow_down {
+      @include monoIcon('select_arrow_down');
     }
   }
 </style>

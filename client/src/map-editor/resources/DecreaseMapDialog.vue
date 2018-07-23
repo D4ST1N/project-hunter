@@ -14,13 +14,9 @@
 <script>
   import $events            from '../../utils/events';
   import getElementPosition from '../../utils/getElementPosition';
-  import Button             from '../../components/ui/Button';
 
   export default {
     name: 'DecreaseMapDialog',
-    components: {
-      Button,
-    },
 
     data() {
       return {

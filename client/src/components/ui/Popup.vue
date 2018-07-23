@@ -23,15 +23,8 @@
 </template>
 
 <script>
-  import Icon from './Icon';
-  import Button from './Button';
-
   export default {
     name: "Popup",
-    components: {
-      Icon,
-      Button,
-    },
     props: {
       title: {
         type: String,
@@ -123,10 +116,6 @@
         opacity: 1;
         transform: scale(1);
       }
-    }
-
-    &__content {
-      height: 400px;
     }
   }
 </style>

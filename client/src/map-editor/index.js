@@ -326,6 +326,8 @@ class Editor extends Phaser.Scene {
   }
 
   update() {
+    this.input.keyboard.enabled = !store.getters.inputDisable;
+
     if (store.getters.instrument === 'selection') {
       if (Phaser.Input.Keyboard.JustDown(keys.left)) {
         this.moveSelection('left');
@@ -617,12 +619,6 @@ const config = {
   backgroundColor: 'rgba(38,50,56 ,1)',
   parent: 'phaser-example',
   scene: Editor,
-  physics: {
-    default: 'arcade',
-    arcade: {
-      debug: true
-    }
-  }
 };
 
 $events.$on('loadMap', (mapData) => {

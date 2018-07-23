@@ -2,7 +2,7 @@
   <div class="new-quest">
     <div class="new-quest__section">
       <div class="new-quest__label">Назва:</div>
-      <input v-model="quest.name" class="new-quest__field" type="text" title="Quest name">
+      <input v-model="quest.name" class="new-quest__field" type="text" title="Quest name" @input="console.log(1)">
     </div>
     <div class="new-quest__section">
       <div class="new-quest__label">Опис:</div>
@@ -10,19 +10,22 @@
     </div>
     <div class="new-quest__section">
       <div class="new-quest__label">Ініціалізація:</div>
+      <ActionsList :list="quest.init" />
       <Button text="Додати дію" type="white" size="small" @buttonClick="showAddActionWindow('init')">
         <Icon slot="before" type="add" size="tiny"></Icon>
       </Button>
     </div>
     <div class="new-quest__section">
       <div class="new-quest__label">Старт:</div>
-      <Button text="Додати дію" type="white" size="small">
+      <ActionsList :list="quest.start" />
+      <Button text="Додати дію" type="white" size="small" @buttonClick="showAddActionWindow('start')">
         <Icon slot="before" type="add" size="tiny"></Icon>
       </Button>
     </div>
     <div class="new-quest__section">
       <div class="new-quest__label">Завершення:</div>
-      <Button text="Додати дію" type="white" size="small">
+      <ActionsList :list="quest.complete" />
+      <Button text="Додати дію" type="white" size="small" @buttonClick="showAddActionWindow('complete')">
         <Icon slot="before" type="add" size="tiny"></Icon>
       </Button>
     </div>
@@ -30,6 +33,9 @@
       <div class="new-quest__label">Кроки:</div>
       <div v-for="(step, index) in quest.steps" class="new-quest__section">
         <div class="new-quest__label">Крок {{ index }}:</div>
+        <div class="new-quest__step-description">
+          {{ step.description }}
+        </div>
         <Button text="Додати дію" type="white" size="small">
           <Icon slot="before" type="add" size="tiny"></Icon>
         </Button>
@@ -44,26 +50,28 @@
         <Icon slot="before" type="add" size="tiny"></Icon>
       </Button>
     </div>
-    <AddActionWindow v-if="showAddAction" @onActionSelect="addAction" @onWindowClose="closeAddActionWindow"></AddActionWindow>
+    <AddActionWindow v-if="showAddAction" :quest="quest" @onActionSelect="addAction" @onWindowClose="closeAddActionWindow" />
+    <AddStepWindow v-if="showAddStepWindow" @stepSubmit="submitStep"/>
   </div>
 </template>
 
 <script>
-  import Button          from '../components/ui/Button';
-  import Icon            from '../components/ui/Icon';
-  import AddActionWindow from './AddActionWindow';
+  import QuestAction     from './QuestAction';
+  import ActionsList from './ActionsList';
+  import AddStepWindow from './AddStepWindow';
 
   export default {
     name: "NewQuest",
     components: {
-      Button,
-      Icon,
-      AddActionWindow,
+      QuestAction,
+      ActionsList,
+      AddStepWindow,
     },
 
     data() {
       return {
         showAddAction: false,
+        showAddStepWindow: false,
         where: null,
         quest: {
           name: 'Новий квест',
@@ -77,9 +85,18 @@
       };
     },
 
+    mounted() {
+      this.$store.commit('disableInput');
+    },
+
     methods: {
       addStep() {
-        this.quest.steps.push([]);
+        this.showAddStepWindow = true;
+      },
+
+      submitStep(step) {
+        this.quest.steps.push(step);
+        this.showAddStepWindow = false;
       },
 
       addAction(action) {
@@ -132,6 +149,17 @@
       padding: 5px 0;
       font-size: 16px;
       color: rgba(224,224,224 ,1);
+    }
+
+    &__quest-action-wrapper {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &__step-description {
+      padding: 5px;
+      background: rgba(207,216,220 ,.2);
+      margin-bottom: 10px;
     }
   }
 </style>

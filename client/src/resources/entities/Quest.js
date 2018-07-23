@@ -1,7 +1,7 @@
 import $events from '../../utils/events';
 
 export default class Quest {
-  constructor({ name, description, init, start, complete, isActive, steps, reward }) {
+  constructor({ name, description, init, start, complete, isActive, reward, steps = [] }) {
     this.name = name;
     this.description = description;
     this.init = init;
@@ -69,6 +69,23 @@ export default class Quest {
     $events.$on('blockEnter', enter);
   }
 
+  static getStepActionsList() {
+    return [
+      {
+        method: 'activateStep',
+        description: 'Зробити цей крок активним',
+      },
+      {
+        method: 'completeStep',
+        description: 'Зробити цей крок виконаним',
+      },
+      {
+        method: 'failStep',
+        description: 'Провалити цей крок',
+      },
+    ];
+  }
+
   static getActionsList() {
     return [
       {
@@ -78,9 +95,24 @@ export default class Quest {
           {
             name: 'step',
             description: 'Який крок квесту виконати',
-            type: String,
+            type: Number,
+
+            items(quest) {
+              return quest.steps.map((step, index) => ({
+                label: `Крок ${index}`,
+                value: index,
+              }));
+            },
           },
         ],
+      },
+      {
+        method: 'start',
+        description: 'Виконати "Старт квесту"',
+      },
+      {
+        method: 'complete',
+        description: 'Виконати "Завершення квесту"',
       },
       {
         method: 'activateQuest',
@@ -116,6 +148,7 @@ export default class Quest {
             name: 'action',
             description: 'Дія, яку потрібно виконати',
             type: Function,
+            actions: [],
           },
         ],
       },
@@ -127,11 +160,31 @@ export default class Quest {
             name: 'topLeft',
             description: 'Координати лівого верхнього блоку',
             type: Object,
+            fields: [
+              {
+                name: 'x',
+                type: Number,
+              },
+              {
+                name: 'y',
+                type: Number,
+              },
+            ],
           },
           {
             name: 'bottomRight',
             description: 'Координати правого нижнього блоку',
             type: Object,
+            fields: [
+              {
+                name: 'x',
+                type: Number,
+              },
+              {
+                name: 'y',
+                type: Number,
+              },
+            ],
           },
           {
             name: 'action',
@@ -154,6 +207,16 @@ export default class Quest {
             description: 'Координати блоку',
             type: Object,
             multiple: true,
+            fields: [
+              {
+                name: 'x',
+                type: Number,
+              },
+              {
+                name: 'y',
+                type: Number,
+              },
+            ],
           },
         ],
       },

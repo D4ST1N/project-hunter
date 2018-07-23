@@ -1,7 +1,7 @@
 <template>
   <button :class="buttonClass" @click="buttonClick">
     <slot name="before"></slot>
-    <span v-if="text" class="button__text">{{ text }}</span>
+    <span v-if="label" class="button__text">{{ label }}</span>
     <slot name="after"></slot>
   </button>
 </template>
@@ -14,7 +14,7 @@
         type: String,
       },
       text: {
-        type: String,
+        type: [String, Number],
       },
       size: {
         type: String,
@@ -22,15 +22,32 @@
       },
       button: {
         type: Object,
+      },
+      squash: {
+        type: Boolean,
+        default: false,
       }
     },
 
     computed: {
+      label() {
+        if (this.text === undefined) {
+          return false;
+        }
+
+        if (typeof this.text === 'number') {
+          return String(this.text);
+        }
+
+        return this.text;
+      },
+
       buttonClass() {
         return {
           button: true,
           [`button--${this.type}`]: !!this.type,
           [`button--${this.size}`]: true,
+          ['button--squash']: this.squash,
         };
       },
     },
@@ -134,6 +151,11 @@
 
     &--tiny {
       font-size: 14px;
+    }
+
+    &--squash {
+      padding: 4px;
+      border-radius: 4px;
     }
 
     &__text {

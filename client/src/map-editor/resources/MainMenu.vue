@@ -12,16 +12,10 @@
 </template>
 
 <script>
-  import Button from '../../components/ui/Button';
-  import Icon from '../../components/ui/Icon';
   import $events from '../../utils/events';
 
   export default {
     name: "MainMenu",
-    components: {
-      Button,
-      Icon,
-    },
 
     data() {
       return {

@@ -16,15 +16,11 @@
 </template>
 
 <script>
-  import Button from '../components/ui/Button';
-  import Icon from '../components/ui/Icon';
   import NewQuest from './NewQuest';
 
   export default {
     name: "QuestEditor",
     components: {
-      Button,
-      Icon,
       NewQuest,
     },
 
