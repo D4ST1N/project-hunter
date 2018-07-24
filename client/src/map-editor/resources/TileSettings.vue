@@ -84,7 +84,7 @@
   }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
   .tile-settings {
 
     &__title {

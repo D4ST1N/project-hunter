@@ -7,6 +7,7 @@ import Button from './components/ui/Button';
 import Icon from './components/ui/Icon';
 import DropDown from './components/ui/DropDown';
 import Popup from './components/ui/Popup';
+import './assets/styles/global.scss';
 
 Vue.config.productionTip = false;
 Vue.component('AddActionWindow', AddActionWindow);

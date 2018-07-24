@@ -86,7 +86,7 @@
 
       create() {
         const selectedTile = this.tiles.find(t => t.selected);
-        const newMap = createEmptyMap(this.width, this.height, selectedTile);
+        const newMap = createEmptyMap(this.width, this.height, Object.assign({}, selectedTile));
         newMap.info.name = this.name;
         newMap.info.description = this.description;
         newMap.info.fileName = this.fileName;

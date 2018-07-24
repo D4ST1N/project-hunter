@@ -9,7 +9,6 @@
   import Map from './components/layouts/Map';
   import MapEditor from './components/layouts/MapEditor';
   import $events from './utils/events';
-  import './assets/styles/global.scss';
 
   export default {
     name: 'app',

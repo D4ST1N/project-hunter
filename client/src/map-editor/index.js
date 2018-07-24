@@ -16,6 +16,7 @@ import Quest                 from '../resources/entities/Quest';
 import test                  from '../resources/quests/test';
 
 let map;
+let game;
 let Player;
 const gameConfig = {
   tileSize: 48,
@@ -40,7 +41,6 @@ class Editor extends Phaser.Scene {
     this.mapObjects = [];
     this.clickStart = false;
     this.hasChanges = false;
-    this.player = null;
     this.depthMatrix = [];
     this.path = [];
     this.isMooving = false;
@@ -48,9 +48,9 @@ class Editor extends Phaser.Scene {
     $events.$on('enlargeMap', this.enlargeMap.bind(this));
     $events.$on('decreaseMap', this.decreaseMap.bind(this));
     $events.$on('selectInstrument', this.selectInstrument.bind(this));
-    $events.$on('saveMap', this.saveMap);
-    $events.$on('zUp', this.zUp);
-    $events.$on('zDown', this.zDown);
+    $events.$on('saveMap', this.saveMap.bind(this));
+    $events.$on('zUp', this.zUp.bind(this));
+    $events.$on('zDown', this.zDown.bind(this));
     $events.$on('removeDecor', (decor) => {
       const index = map.scenery.indexOf(decor);
       store.commit('removeDecor', index);
@@ -283,7 +283,9 @@ class Editor extends Phaser.Scene {
   }
 
   preload() {
-    $events.$emit('resourcesLoadStart');
+    this.load.on('start', () => {
+      $events.$emit('resourcesLoadStart');
+    });
     this.load.on('progress', (value) => {
       $events.$emit('progressUpdate', value);
     });
@@ -301,6 +303,7 @@ class Editor extends Phaser.Scene {
   }
 
   create() {
+    this.player = null;
     this.createScene();
     this.updateState();
 
@@ -571,7 +574,10 @@ class Editor extends Phaser.Scene {
         } else {
           if (store.getters.instrument === 'selection') {
             this.highlight.visible = false;
-            store.commit('selectTile', null);
+
+            if (store.getters.tile !== null) {
+              store.commit('selectTile', null);
+            }
           }
         }
 
@@ -622,9 +628,16 @@ const config = {
 };
 
 $events.$on('loadMap', (mapData) => {
+  const restart = map !== undefined;
   map = mapData.content;
+  store.commit('updateMap', map);
   store.commit('selectMap', map.info.fileName);
-  const game = new Phaser.Game(config);
+
+  if (restart) {
+    game.scene.scenes[0].scene.restart();
+  } else {
+    game = new Phaser.Game(config);
+  }
 
   window.addEventListener('resize', () => {
     game.resize(window.innerWidth, window.innerHeight);
