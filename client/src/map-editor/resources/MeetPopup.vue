@@ -13,15 +13,17 @@
             <span>Створити нову карту</span>
           </div>
         </div>
+        <Button text="Ще одну нотифікацію" @buttonClick="showNotification" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import Icon from '../../components/ui/Icon';
-  import $events from '../../utils/events';
+  import Icon      from '../../components/ui/Icon';
+  import $events   from '../../utils/events';
   import '../../assets/styles/popup.scss';
+  import randomInt from '../../utils/randomInt';
 
   export default {
     name: "MeetPopup",
@@ -32,6 +34,23 @@
     data() {
       return {
         show: true,
+        titles: [
+          'Помилка!',
+          'Сталась якась біда!',
+          'Ну тут явно ти щось натворив(ла)',
+          'Ой, біда!',
+          'От, халепа',
+          'Трясця!',
+          'Овва!',
+        ],
+        texts: [
+          'Тут типу опис помилки...',
+          'Ще не пізно щось виправити!',
+          'Наступного разу в тебе все вийде!',
+          'За моєї молодості такого не було...',
+          'За інших обставин все могло бути добре, проте...',
+          'В мене для тебе погані новини...'
+        ]
       };
     },
 
@@ -42,6 +61,14 @@
     },
 
     methods: {
+      showNotification() {
+        $events.$emit('showNotification', {
+          text: this.texts[randomInt(0, this.texts.length - 1)],
+          title: this.titles[randomInt(0, this.titles.length - 1)],
+          time: randomInt(2500, 8000),
+        });
+      },
+
       showMaps() {
         $events.$emit('showOpenMaps');
         this.show = false;

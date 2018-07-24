@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <NotificationCenter />
     <Map v-if="false"></Map>
     <MapEditor v-if="true"></MapEditor>
   </div>

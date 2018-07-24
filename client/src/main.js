@@ -7,6 +7,7 @@ import Button from './components/ui/Button';
 import Icon from './components/ui/Icon';
 import DropDown from './components/ui/DropDown';
 import Popup from './components/ui/Popup';
+import NotificationCenter from './components/ui/NotificationCenter';
 import './assets/styles/global.scss';
 
 Vue.config.productionTip = false;
@@ -15,6 +16,7 @@ Vue.component('Button', Button);
 Vue.component('Icon', Icon);
 Vue.component('DropDown', DropDown);
 Vue.component('Popup', Popup);
+Vue.component('NotificationCenter', NotificationCenter);
 
 new Vue({
   store,
