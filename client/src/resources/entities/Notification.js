@@ -1,7 +1,7 @@
 export default class Notification {
   constructor({
     title,
-    text,
+    text = '',
     type = 'error',
     time = 2500,
     dynamicTime = true,

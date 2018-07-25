@@ -1,19 +1,20 @@
 import Phaser               from 'phaser';
 import PF                   from 'pathfinding';
+import findLast             from 'lodash/findLast';
 import store                from '../store';
-import cartesianToIsometric  from '../utils/cartesianToIsometric';
-import collision             from '../utils/collision';
-import findLast              from 'lodash/findLast';
-import $events               from '../utils/events';
-import createArray           from '../utils/createArray';
-import objects               from '../resources/objects';
-import tiles                 from '../resources/tiles';
-import createClearMatrix     from '../utils/createClearMatrix';
-import createPassageMatrix   from '../utils/createPassageMatrix';
-import API                   from '../services/API';
-import PlayerPrototype       from '../resources/entities/Player';
-import Quest                 from '../resources/entities/Quest';
-import test                  from '../resources/quests/test';
+import cartesianToIsometric from '../utils/cartesianToIsometric';
+import collision            from '../utils/collision';
+import $events              from '../utils/events';
+import createArray          from '../utils/createArray';
+import objects              from '../resources/objects';
+import tiles                from '../resources/tiles';
+import createClearMatrix    from '../utils/createClearMatrix';
+import createPassageMatrix  from '../utils/createPassageMatrix';
+import API                  from '../services/API';
+import PlayerPrototype      from '../resources/entities/Player';
+import Quest                from '../resources/entities/Quest';
+import test                 from '../resources/quests/test';
+import logger               from '../logger';
 
 let map;
 let game;
@@ -45,6 +46,7 @@ class Editor extends Phaser.Scene {
     this.path = [];
     this.isMooving = false;
 
+    logger.log('Subscribe events', 'info');
     $events.$on('enlargeMap', this.enlargeMap.bind(this));
     $events.$on('decreaseMap', this.decreaseMap.bind(this));
     $events.$on('selectInstrument', this.selectInstrument.bind(this));
@@ -63,6 +65,7 @@ class Editor extends Phaser.Scene {
     $events.$on('moveEnded', () => {
       this.isMooving = false;
     });
+    logger.log('Events subscribed', 'info');
   }
 
   getDefaultOffset() {
@@ -83,16 +86,29 @@ class Editor extends Phaser.Scene {
   }
 
   saveMap() {
+    logger.log('Map saving');
     API()
       .post('/saveMap', {
         name:    store.state.editor.currentMap,
         content: map
       })
-      .then(console.log)
-      .catch(console.error);
+      .then((response) => {
+        logger.log(response.data);
+        $events.$emit('showNotification', {
+          title: 'Карта збережена успішно.',
+          type: 'success',
+        });
+      })
+      .catch((error) => {
+        logger.log(error, 'error');
+        $events.$emit('showNotification', {
+          title: 'Сталась помилка під час збереження карти.',
+        });
+      });
   }
 
   updateState() {
+    logger.log('Update map state');
     store.commit('updateMap', map);
   }
 
@@ -146,40 +162,57 @@ class Editor extends Phaser.Scene {
   }
 
   decreaseMap(direction) {
+    logger.log('decrease map');
     if (direction === 'down') {
-      this.map[this.map.length - 1].forEach((sprite) => {
-        sprite.destroy();
-      });
-      map.geo.pop();
-      this.map.pop();
+      try {
+        this.map[this.map.length - 1].forEach((sprite) => {
+          sprite.destroy();
+        });
+        map.geo.pop();
+        this.map.pop();
+      } catch (e) {
+        logger.log(e, 'error');
+      }
     }
 
     if (direction === 'right') {
-      map.geo.forEach(row => row.pop());
-      this.map.forEach((row) => {
-        row[row.length - 1].destroy();
-        row.pop();
-      });
+      try {
+        map.geo.forEach(row => row.pop());
+        this.map.forEach((row) => {
+          row[row.length - 1].destroy();
+          row.pop();
+        });
+      } catch (e) {
+        logger.log(e, 'error');
+      }
     }
 
     if (direction === 'up') {
-      map.geo.shift();
-      this.map[0].forEach((sprite) => {
-        sprite.destroy();
-      });
-      this.map.shift();
-      gameConfig.offset.x -= gameConfig.tileSize;
-      gameConfig.offset.y += gameConfig.tileSize / 2;
+      try {
+        map.geo.shift();
+        this.map[0].forEach((sprite) => {
+          sprite.destroy();
+        });
+        this.map.shift();
+        gameConfig.offset.x -= gameConfig.tileSize;
+        gameConfig.offset.y += gameConfig.tileSize / 2;
+      } catch (e) {
+        logger.log(e, 'error');
+      }
     }
 
     if (direction === 'left') {
-      map.geo.forEach(row => row.shift());
-      this.map.forEach((row) => {
-        row[0].destroy();
-        row.shift();
-      });
-      gameConfig.offset.x += gameConfig.tileSize;
-      gameConfig.offset.y += gameConfig.tileSize / 2;
+      try {
+        map.geo.forEach(row => row.shift());
+        this.map.forEach((row) => {
+          row[0].destroy();
+          row.shift();
+        });
+        gameConfig.offset.x += gameConfig.tileSize;
+        gameConfig.offset.y += gameConfig.tileSize / 2;
+      } catch (e) {
+        logger.log(e, 'error');
+      }
     }
 
     this.hasChanges = true;
@@ -211,11 +244,13 @@ class Editor extends Phaser.Scene {
 
   zUp() {
     store.commit('selectedTileUp');
+    logger.log('Block up');
     this.updateState();
   }
 
   zDown() {
     store.commit('selectedTileDown');
+    logger.log('Block down');
     this.updateState();
   }
 
@@ -284,12 +319,14 @@ class Editor extends Phaser.Scene {
 
   preload() {
     this.load.on('start', () => {
+      logger.log('Started resource loading');
       $events.$emit('resourcesLoadStart');
     });
     this.load.on('progress', (value) => {
       $events.$emit('progressUpdate', value);
     });
     this.load.on('complete', () => {
+      logger.log('Resources loading complete');
       $events.$emit('progressStop');
     });
     tiles.forEach((tile) => {
@@ -304,7 +341,9 @@ class Editor extends Phaser.Scene {
 
   create() {
     this.player = null;
+    logger.log('Creating scene');
     this.createScene();
+    logger.log('Scene created');
     this.updateState();
 
     if (this.player) {
@@ -543,6 +582,7 @@ class Editor extends Phaser.Scene {
 
             this.map[y][x].setTexture(tile.tile);
             this.hasChanges = true;
+            logger.log(`Place tile ${tile.tile} into [${x},${y}]`);
             this.updateState();
           } else if (store.getters.instrument === 'selection') {
             this.highlightedTile = this.map[y][x];
@@ -553,6 +593,7 @@ class Editor extends Phaser.Scene {
               y,
               depth: this.highlightedTile.depth,
             });
+            logger.log(`Select tile [${x},${y}]`);
           } else if (store.getters.instrument === 'move') {
             const decor = this.getDecor(store.getters.decor);
             const sprite = this.map[y][x];
@@ -564,6 +605,7 @@ class Editor extends Phaser.Scene {
               matrix:        decor.grid.matrix,
               startPosition: decor.grid.startPosition
             });
+            logger.log(`Place decoration ${decor.name} into [${x},${y}]`);
             this.hasChanges = true;
             this.updateState();
           } else if (store.getters.instrument === 'walk') {
@@ -576,6 +618,7 @@ class Editor extends Phaser.Scene {
             this.highlight.visible = false;
 
             if (store.getters.tile !== null) {
+              logger.log('Deselect tile');
               store.commit('selectTile', null);
             }
           }
@@ -628,18 +671,32 @@ const config = {
 };
 
 $events.$on('loadMap', (mapData) => {
+  $events.$emit('showNotification', {
+    title: 'Карта завантажена успішно.',
+    type: 'success',
+  });
+  logger.log('Loaded map');
   const restart = map !== undefined;
   map = mapData.content;
   store.commit('updateMap', map);
   store.commit('selectMap', map.info.fileName);
 
   if (restart) {
-    game.scene.scenes[0].scene.restart();
+    logger.log('Restarting map editor');
+
+    try {
+      game.scene.scenes[0].scene.restart();
+    } catch (e) {
+      logger.log(e, error);
+      throw new Error(e);
+    }
   } else {
+    logger.log('Start map editor');
     game = new Phaser.Game(config);
   }
 
   window.addEventListener('resize', () => {
+    logger.log(`Window resize to ${window.innerWidth}x${window.innerHeight}`);
     game.resize(window.innerWidth, window.innerHeight);
   }, false);
 });

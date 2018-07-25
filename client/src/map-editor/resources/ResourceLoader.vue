@@ -3,9 +3,9 @@
     <div class="resource-loader__title">Завантаження карти...</div>
     <div class="resource-loader__progress-bar">
       <div class="resource-loader__progress" :style="{ width: `${progress}%` }">
-        <div class="resource-loader__progress-percent">{{ progress }}</div>
+        <div class="resource-loader__progress-percent">{{ progress }}%</div>
       </div>
-      <div class="resource-loader__progress-percent resource-loader__progress-percent--white">{{ progress }}</div>
+      <div class="resource-loader__progress-percent resource-loader__progress-percent--white">{{ progress }}%</div>
     </div>
   </div>
 </template>

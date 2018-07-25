@@ -91,7 +91,6 @@
       },
 
       addAction(action) {
-        console.log(action);
         const index = this.action.params.indexOf(this.selectedParameter);
 
         if (index) {
@@ -106,7 +105,6 @@
       },
 
       showAddActionWindow(parameter) {
-        console.log(parameter);
         this.selectedParameter = parameter;
         this.showAddAction = true;
       },

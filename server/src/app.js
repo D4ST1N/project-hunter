@@ -29,14 +29,40 @@ app.get('/maps/', (req, res) => {
 
 });
 app.post('/saveMap', (req, res) => {
-  console.log(req.body);
-
   fs.writeFile(`./resources/maps/${req.body.name}.json`, JSON.stringify(req.body.content), 'utf8', (err) => {
     if (err) {
       console.error(err);
     }
 
     res.send('The file has been saved!');
+  });
+});
+
+
+app.post('/start', (req, res) => {
+  fs.writeFile(`./logs/${req.body.fileName}.txt`, '', 'utf8', (err) => {
+    if (err) {
+      console.error(err);
+      res.send(err);
+    } else {
+      res.send('The log file has been created!');
+    }
+  });
+});
+
+app.post('/logs', (req, res) => {
+  let logs = fs.readFileSync(`./logs/${req.body.fileName}.txt`);
+  req.body.logs.forEach((log) => {
+    logs += `${log.time}: [${log.level}] ${log.message}\n`;
+  });
+
+  fs.writeFile(`./logs/${req.body.fileName}.txt`, logs, 'utf8', (err) => {
+    if (err) {
+      console.error(err);
+      res.send(err);
+    } else {
+      res.send('The log file has been saved!');
+    }
   });
 });
 

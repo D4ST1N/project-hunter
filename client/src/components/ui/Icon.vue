@@ -153,6 +153,10 @@
       @include monoIcon('return');
     }
 
+    &--log {
+      @include monoIcon('log');
+    }
+
     &--map_mono {
       @include monoIcon('map_mono');
     }

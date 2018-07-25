@@ -2,7 +2,7 @@
   <div class="new-quest">
     <div class="new-quest__section">
       <div class="new-quest__label">Назва:</div>
-      <input v-model="quest.name" class="new-quest__field" type="text" title="Quest name" @input="console.log(1)">
+      <input v-model="quest.name" class="new-quest__field" type="text" title="Quest name">
     </div>
     <div class="new-quest__section">
       <div class="new-quest__label">Опис:</div>

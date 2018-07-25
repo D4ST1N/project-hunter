@@ -8,8 +8,6 @@ module.exports = function readFiles(dirname, onFileContent, onError) {
     }
 
     filenames.forEach((filename) => {
-      console.log(dirname);
-      console.log(filename);
       fs.readFile(`${dirname}/${filename}`, 'utf-8', (err, content) => {
         if (err) {
           onError(err);

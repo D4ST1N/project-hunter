@@ -9,7 +9,7 @@
         :type="getButtonType(button)"
         @buttonClick="buttonClick"
       >
-        <Icon slot="before" :type="button.icon" />
+        <Icon slot="before" :type="button.icon" :style="{ background: button.color ? button.color : false }" />
       </Button>
     </div>
     <EnlargeMapDialog />
@@ -148,6 +148,16 @@
 
                 action() {
                   $events.$emit('saveMap');
+                }
+              },
+              {
+                name: 'save logs',
+                label: 'Зберети логи',
+                icon: 'log',
+                color: 'black',
+
+                action() {
+                  $events.$emit('saveLogs');
                 }
               }
             ]

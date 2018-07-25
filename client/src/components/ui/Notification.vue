@@ -29,6 +29,7 @@
       notificationStyles() {
         return {
           notification: true,
+          [`notification--${this.notification.type}`]: true,
           'notification--interactive': this.notification.clickToClose,
         }
       },
@@ -72,6 +73,10 @@
 
     &--interactive {
       cursor: pointer;
+    }
+
+    &--success {
+      background: rgba(76,175,80 ,1);
     }
 
     &__content {
