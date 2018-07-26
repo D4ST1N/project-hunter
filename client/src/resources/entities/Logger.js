@@ -12,13 +12,13 @@ export default class Logger {
     this.logs = [];
   }
 
-  log(message, level = 'info') {
+  log(message, level = 'info', info = '') {
     if (this.priorities.indexOf(level) >= this.priorities.indexOf(this.level)) {
       if (!this.only || this.level === level) {
         const now = new Date();
 
         if (typeof message === 'object') {
-          message = `${message.message}\n${message.stack}`;
+          message = `${info}\n${message.message}\n${message.stack}`;
         }
 
         this.logs.push({

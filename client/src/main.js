@@ -12,6 +12,14 @@ import './assets/styles/global.scss';
 import logger             from './logger';
 
 Vue.config.productionTip = false;
+Vue.config.errorHandler = (error, vm, info) => {
+  console.error(error);
+  logger.log(error, 'error', info);
+};
+Vue.config.warnHandler = (message, vm, trace) => {
+  console.warn(message);
+  logger.log(message, 'warning', trace);
+};
 
 Vue.prototype.$logger = logger;
 Vue.component('AddActionWindow', AddActionWindow);

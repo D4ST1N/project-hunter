@@ -65,6 +65,34 @@ class Editor extends Phaser.Scene {
     $events.$on('moveEnded', () => {
       this.isMooving = false;
     });
+    $events.$on('blockClick', (coordinates) => {
+      switch (store.getters.instrument) {
+        case 'draw':
+          this.drawTile(coordinates);
+          break;
+
+        case 'selection':
+          this.selectBlock(coordinates);
+          break;
+
+        case 'move':
+          this.setDecoration(coordinates);
+          break;
+
+        default:
+          break;
+      }
+    });
+    $events.$on('clickOutsideMap', () => {
+      switch (store.getters.instrument) {
+        case 'selection':
+          this.deselectBlock();
+          break;
+
+        default:
+          break;
+      }
+    });
     logger.log('Events subscribed', 'info');
   }
 
@@ -569,64 +597,79 @@ class Editor extends Phaser.Scene {
           pointer.y - gameConfig.offset.y,
           tilePoints
         )) {
-          const tile = map.geo[y][x];
-
-          if (store.getters.instrument === 'draw') {
-            const tileData = this.getTile(store.getters.drawTile);
-            tile.tile = store.getters.drawTile;
-            tile.height = tileData.height;
-
-            if (store.state.editor.showEmptyTiles && tile.tile === 'empty') {
-              tile.tile = 'empty_cube';
-            }
-
-            this.map[y][x].setTexture(tile.tile);
-            this.hasChanges = true;
-            logger.log(`Place tile ${tile.tile} into [${x},${y}]`);
-            this.updateState();
-          } else if (store.getters.instrument === 'selection') {
-            this.highlightedTile = this.map[y][x];
-            this.highlight.visible = true;
-            store.commit('selectTile', {
-              tile,
-              x,
-              y,
-              depth: this.highlightedTile.depth,
-            });
-            logger.log(`Select tile [${x},${y}]`);
-          } else if (store.getters.instrument === 'move') {
-            const decor = this.getDecor(store.getters.decor);
-            const sprite = this.map[y][x];
-            this.addDecor(sprite, decor);
-            map.scenery.push({
-              name:          decor.name,
-              block:         { x, y },
-              size:          decor.grid.size,
-              matrix:        decor.grid.matrix,
-              startPosition: decor.grid.startPosition
-            });
-            logger.log(`Place decoration ${decor.name} into [${x},${y}]`);
-            this.hasChanges = true;
-            this.updateState();
-          } else if (store.getters.instrument === 'walk') {
-            this.findPath(x, y);
-          }
+          $events.$emit('blockClick', { x, y });
 
           return true;
         } else {
-          if (store.getters.instrument === 'selection') {
-            this.highlight.visible = false;
-
-            if (store.getters.tile !== null) {
-              logger.log('Deselect tile');
-              store.commit('selectTile', null);
-            }
-          }
+          $events.$emit('clickOutsideMap');
         }
 
         return false;
       });
     });
+  }
+
+  drawTile({ x, y }) {
+    const tile = map.geo[y][x];
+    const tileData = this.getTile(store.getters.drawTile);
+    tile.tile = store.getters.drawTile;
+    tile.height = tileData.height;
+
+    if (store.state.editor.showEmptyTiles && tile.tile === 'empty') {
+      tile.tile = 'empty_cube';
+    }
+
+    this.map[y][x].setTexture(tile.tile);
+    this.hasChanges = true;
+    logger.log(`Place tile ${tile.tile} into [${x},${y}]`);
+    this.updateState();
+  }
+
+  setDecoration({ x, y }) {
+    const decor = this.getDecor(store.getters.decor);
+
+    if (x < decor.grid.size.width - 1 || y < decor.grid.size.height - 1) {
+      $events.$emit('showNotification', {
+        title: 'Неможливо поставити декорацію за межами карти'
+      });
+
+      return;
+    }
+
+    const sprite = this.map[y][x];
+    this.addDecor(sprite, decor);
+    store.commit('addDecor', {
+      name:          decor.name,
+      block:         { x, y },
+      size:          decor.grid.size,
+      matrix:        decor.grid.matrix,
+      startPosition: decor.grid.startPosition
+    });
+    logger.log(`Place decoration ${decor.name} into [${x},${y}]`);
+    this.hasChanges = true;
+    this.updateState();
+  }
+
+  selectBlock({ x, y }) {
+    const tile = map.geo[y][x];
+    this.highlightedTile = this.map[y][x];
+    this.highlight.visible = true;
+    store.commit('selectTile', {
+      tile,
+      x,
+      y,
+      depth: this.highlightedTile.depth,
+    });
+    logger.log(`Select tile [${x},${y}]`);
+  }
+
+  deselectBlock() {
+    this.highlight.visible = false;
+
+    if (store.getters.tile !== null) {
+      logger.log('Deselect tile');
+      store.commit('selectTile', null);
+    }
   }
 
   findPath(x, y) {

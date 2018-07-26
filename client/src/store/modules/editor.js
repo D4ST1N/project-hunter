@@ -84,6 +84,10 @@ const mutations = {
     state.map = mapData;
   },
 
+  addDecor(state, decoration) {
+    state.map.scenery.push(decoration);
+  },
+
   removeDecor(state, index) {
     state.map.scenery.splice(index, 1);
   },
