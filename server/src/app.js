@@ -23,10 +23,8 @@ app.get('/maps/', (req, res) => {
     './resources/maps',
     (files) => {
       res.send(files);
-    },
-    console.error
+    }
   );
-
 });
 app.post('/saveMap', (req, res) => {
   fs.writeFile(`./resources/maps/${req.body.name}.json`, JSON.stringify(req.body.content), 'utf8', (err) => {
@@ -68,6 +66,11 @@ app.post('/logs', (req, res) => {
       res.send('The log file has been saved!');
     }
   });
+});
+
+app.get('/icon-list', (req, res) => {
+  const filesList = fs.readdirSync('../client/src/assets/icons/');
+  res.send(filesList);
 });
 
 app.listen(process.env.PORT || 8081);
