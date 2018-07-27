@@ -6,10 +6,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
-  padding: 0;
   color: $base-text-color;
   height: 100vh;
   background: rgba(38,50,56 ,1);
+  padding: 5px;
+  box-sizing: border-box;
 }
 
 body * {
@@ -40,4 +41,5 @@ body * {
 
 .nav-link {
   text-decoration: none;
+  margin-right: 10px;
 }

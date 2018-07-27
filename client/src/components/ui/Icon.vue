@@ -46,6 +46,7 @@
   .icon {
     display: inline-flex;
     pointer-events: none;
+    transition: width .375s, height .375s;
 
     &--medium {
       width: 32px;
@@ -145,6 +146,18 @@
       @include icon('info');
     }
 
+    &--castle {
+      @include icon('castle');
+    }
+
+    &--edit {
+      @include icon('edit');
+    }
+
+    &--hand {
+      @include icon('hand');
+    }
+
     &--search {
       @include monoIcon('search');
     }
@@ -175,6 +188,14 @@
 
     &--select_arrow_down {
       @include monoIcon('select_arrow_down');
+    }
+
+    &--cancel_mono {
+      @include monoIcon('cancel');
+    }
+
+    &--add_mono {
+      @include monoIcon('add');
     }
   }
 </style>

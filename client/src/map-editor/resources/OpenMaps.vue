@@ -15,8 +15,12 @@
           </div>
         </div>
         <div class="open-maps__footer">
-          <Button type="blue" text="Відкрити" @buttonClick="openMap"></Button>
-          <Button type="red" text="Відміна" @buttonClick="cancel"></Button>
+          <Button type="green" text="Вибрати" size="small" @buttonClick="openMap">
+            <Icon slot="before" type="hand" size="small"></Icon>
+          </Button>
+          <Button type="red" text="Відміна" size="small" @buttonClick="cancel">
+            <Icon slot="before" type="cancel_mono" size="small"></Icon>
+          </Button>
         </div>
       </div>
     </div>

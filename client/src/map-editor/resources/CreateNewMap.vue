@@ -3,7 +3,7 @@
     <div class="popup__overlay">
       <div class="popup__content">
         <h2 class="popup__title">Створити нову карту</h2>
-        <div class="popup__container">
+        <div class="popup__container create-new-popup__container">
           <div class="create-new-popup__item create-new-popup__item--row">
             <div class="create-new-popup__item create-new-popup__item--half create-new-popup__item--row">
               <label for="map-width" class="create-new-popup__label">Ширина карти</label>
@@ -42,8 +42,12 @@
           </div>
         </div>
         <div class="popup__footer">
-          <Button type="blue" text="Створити" @buttonClick="create" />
-          <Button type="red" text="Відміна" @buttonClick="cancel"></Button>
+          <Button type="green" text="Створити" size="small" @buttonClick="create">
+            <Icon slot="before" type="add_mono" size="small"></Icon>
+          </Button>
+          <Button type="red" text="Відміна" size="small" @buttonClick="cancel">
+            <Icon slot="before" type="cancel_mono" size="small"></Icon>
+          </Button>
         </div>
       </div>
     </div>
@@ -117,6 +121,10 @@
 <style lang="scss">
   .create-new-popup {
 
+    &__container {
+      padding-top: 20px;
+    }
+
     &__item {
       display: flex;
       max-width: 600px;
@@ -145,7 +153,7 @@
       padding: 5px 15px;
 
       &--number {
-        width: 150px;
+        width: 100px;
       }
     }
   }

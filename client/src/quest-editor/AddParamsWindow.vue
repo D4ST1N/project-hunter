@@ -26,7 +26,12 @@
             </div>
           </div>
         </div>
-        <Button type="white" size="small" text="Додати" @buttonClick="submit" />
+        <Button text="Додати" type="green" size="small"  @buttonClick="submit">
+          <Icon slot="before" type="add_mono" size="tiny"></Icon>
+        </Button>
+        <Button text="Відмінити" type="red" size="small" @buttonClick="cancel">
+          <Icon slot="before" type="cancel_mono" size="tiny"></Icon>
+        </Button>
       </div>
     </div>
     <AddActionWindow v-if="showAddAction" :quest="quest" :inner="true" @onActionSelect="addAction" @onWindowClose="closeAddActionWindow" />
@@ -63,6 +68,10 @@
     methods: {
       submit() {
         this.$emit('submit', this.action);
+      },
+
+      cancel() {
+        this.$emit('cancel');
       },
 
       parameterType(type) {

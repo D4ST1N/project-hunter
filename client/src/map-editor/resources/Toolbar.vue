@@ -72,18 +72,6 @@
                   $events.$emit('selectInstrument', button.name);
                 }
               },
-              {
-                name: 'quests',
-                label: 'Квести',
-                icon: 'scroll',
-
-                action(button) {
-                  this.deselectInstrumentsButton();
-                  this.$set(button, 'selected', true);
-                  this.$store.commit('selectInstrument', button.name);
-                  $events.$emit('selectInstrument', button.name);
-                }
-              },
               // {
               //   name: 'picker',
               //   label: 'Пипетка',

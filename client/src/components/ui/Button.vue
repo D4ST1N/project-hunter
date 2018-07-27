@@ -81,6 +81,10 @@
       background: linear-gradient(to bottom, rgba(25,118,210 ,1), rgba(21,101,192 ,1));
     }
 
+    &:last-child {
+      margin-right: 0;
+    }
+
     &--red {
       background: linear-gradient(to bottom, rgba(244,81,30 ,1), rgba(230,74,25 ,1));
       box-shadow: 2px 2px 8px 0 rgba(191,54,12 ,1);

@@ -1,6 +1,5 @@
 <template>
   <div class="editor" id="editor">
-    <MainMenu />
     <Sidebar />
     <Toolbar />
     <MeetPopup />
@@ -8,6 +7,7 @@
     <ResourceLoader />
     <CreateNewMap />
     <Quests />
+    <MainMenu />
     <div class="editor__about">
       <Button :squash="true" type="transparent" @buttonClick="toggleAbout">
         <Icon slot="before" type="info"></Icon>

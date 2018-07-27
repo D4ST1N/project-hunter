@@ -3,7 +3,6 @@
     <Tiles v-show="showTiles" />
     <Objects v-show="showObjects" />
     <TileSettings v-show="showTileSettings" />
-    <QuestEditor v-show="showQuestEditor" />
   </div>
 </template>
 
@@ -11,7 +10,6 @@
   import Tiles        from './Tiles';
   import Objects      from './Objects';
   import TileSettings from './TileSettings';
-  import QuestEditor  from '../../quest-editor/QuestEditor';
   import $events      from '../../utils/events';
 
   export default {
@@ -20,7 +18,6 @@
       Tiles,
       Objects,
       TileSettings,
-      QuestEditor,
     },
 
     data() {

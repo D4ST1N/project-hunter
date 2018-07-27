@@ -39,6 +39,14 @@
               this.toggle();
             },
           },
+          {
+            name: 'home',
+            label: 'На головну',
+
+            action() {
+              this.$router.push('/');
+            },
+          },
           // {
           //   name: 'change',
           //   label: 'Змінити інформацію про карту',

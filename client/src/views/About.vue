@@ -19,6 +19,11 @@
             <Button v-if="popup" class="about__button" text="Закрити" size="medium" type="white" @buttonClick="close">
               <Icon slot="before" size="small" type="cancel"></Icon>
             </Button>
+            <router-link v-else to="/" class="nav-link">
+              <Button class="about__button" text="На головну" size="medium" type="white">
+                <Icon slot="before" size="small" type="castle"></Icon>
+              </Button>
+            </router-link>
             <div v-if="versionInfo.length > 0" class="about__version-info popup">
               <div class="popup__overlay">
                 <div class="popup__content">
@@ -28,7 +33,9 @@
                       * * * * * * * * * * * * * * *  * * * * * *
                     </div>
                   </div>
-                  <Button text="Закрити" type="white" size="small" @buttonClick="versionInfo = []" />
+                  <Button text="Закрити" type="white" size="small" @buttonClick="versionInfo = []">
+                    <Icon slot="before" size="small" type="cancel"></Icon>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -93,8 +100,6 @@
     color: #fff;
 
     &__wrapper {
-      display: flex;
-      flex-direction: column;
     }
 
     &__button {

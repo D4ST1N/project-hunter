@@ -29,7 +29,7 @@
         </div>
       </div>
     </div>
-    <AddParamsWindow v-show="showAddParamsWindow" :action="action" :quest="quest" @submit="addAction" />
+    <AddParamsWindow v-show="showAddParamsWindow" :action="action" :quest="quest" @submit="addAction" @cancel="showAddParamsWindow = false" />
   </div>
 </template>
 
@@ -92,13 +92,15 @@
       height: 100%;
       top: 0;
       left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     &__content-wrapper {
       position: fixed;
       background: rgba(96,125,139 ,.8);
       top: 20px;
-      right: 530px;
       padding: 10px;
       border-radius: 5px;
       display: flex;
