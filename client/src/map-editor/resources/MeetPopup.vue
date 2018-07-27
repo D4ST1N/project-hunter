@@ -22,7 +22,6 @@
   import Icon      from '../../components/ui/Icon';
   import $events   from '../../utils/events';
   import '../../assets/styles/popup.scss';
-  import randomInt from '../../utils/randomInt';
 
   export default {
     name: "MeetPopup",

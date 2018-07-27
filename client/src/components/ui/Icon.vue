@@ -141,6 +141,10 @@
       @include icon('scroll');
     }
 
+    &--info {
+      @include icon('info');
+    }
+
     &--search {
       @include monoIcon('search');
     }

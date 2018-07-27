@@ -1,6 +1,7 @@
 import Vue                from 'vue';
 import App                from './App.vue';
 import store              from './store'
+import router             from './router';
 import AddActionWindow    from './quest-editor/AddActionWindow';
 // UI Components
 import Button             from './components/ui/Button';
@@ -31,5 +32,6 @@ Vue.component('NotificationCenter', NotificationCenter);
 
 new Vue({
   store,
+  router,
   render: h => h(App),
 }).$mount('#app');

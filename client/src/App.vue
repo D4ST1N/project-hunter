@@ -1,23 +1,16 @@
 <template>
   <div id="app">
     <NotificationCenter />
-    <Map v-if="false"></Map>
-    <MapEditor v-if="true"></MapEditor>
+    <router-view/>
   </div>
 </template>
 
 <script>
-  import Map       from './components/layouts/Map';
-  import MapEditor from './components/layouts/MapEditor';
   import API       from './services/API';
   import $events   from './utils/events';
 
   export default {
     name: 'app',
-    components: {
-      Map,
-      MapEditor,
-    },
 
     created() {
     },
@@ -26,7 +19,7 @@
       this.$logger.log('App loaded');
       $events.$on('saveLogs', this.sendLogs);
       this.createLogFile();
-      setInterval(this.sendLogs, 1000 * 60);
+      setInterval(this.sendLogs.bind(this, true), 1000 * 60);
     },
 
     methods: {
@@ -49,15 +42,17 @@
           });
       },
 
-      sendLogs() {
+      sendLogs(passive = false) {
         API()
           .post('/logs', { logs: this.$logger.getLogs(), fileName: this.$root.fileName })
           .then((response) => {
-            this.$logger.log(response.data);
-            $events.$emit('showNotification', {
-              title: 'Логи збережено успішно.',
-              type: 'success',
-            });
+            if (!passive) {
+              this.$logger.log(response.data);
+              $events.$emit('showNotification', {
+                title: 'Логи збережено успішно.',
+                type:  'success',
+              });
+            }
           })
           .catch((error) => {
             this.$logger.log(error, 'error');
