@@ -28,16 +28,19 @@
     <div v-if="showNewQuest" class="quest-editor__new-quest">
       <NewQuest @cancel="showNewQuest = false" />
     </div>
+    <AboutFloatButton />
   </div>
 </template>
 
 <script>
   import NewQuest from './NewQuest';
+  import AboutFloatButton from '../components/AboutFloatButton';
 
   export default {
     name: "QuestEditor",
     components: {
       NewQuest,
+      AboutFloatButton,
     },
 
     data() {

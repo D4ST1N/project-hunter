@@ -8,12 +8,7 @@
     <CreateNewMap />
     <Quests />
     <MainMenu />
-    <div class="editor__about">
-      <Button :squash="true" type="transparent" @buttonClick="toggleAbout">
-        <Icon slot="before" type="info"></Icon>
-      </Button>
-    </div>
-    <About v-if="showAbout" :popup="true" @close="toggleAbout" />
+    <AboutFloatButton />
   </div>
 </template>
 
@@ -26,13 +21,12 @@
   import CreateNewMap   from '../map-editor/resources/CreateNewMap';
   import Quests         from '../map-editor/resources/Quests';
   import Toolbar        from '../map-editor/resources/Toolbar';
-  import About          from '../views/About';
+  import AboutFloatButton from '../components/AboutFloatButton';
   import '../map-editor';
 
   export default {
     name: "MapEditor",
     components: {
-      About,
       Sidebar,
       OpenMaps,
       Toolbar,
@@ -41,6 +35,7 @@
       CreateNewMap,
       MainMenu,
       Quests,
+      AboutFloatButton,
     },
 
     data() {
@@ -56,22 +51,10 @@
     mounted() {
       this.$logger.log('Map Editor loaded', 'info');
     },
-
-    methods: {
-      toggleAbout() {
-        this.showAbout = !this.showAbout;
-      }
-    }
   }
 </script>
 
 <style lang="scss">
   .editor {
-
-    &__about {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-    }
   }
 </style>
