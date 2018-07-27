@@ -40,6 +40,10 @@ app.post('/saveMap', (req, res) => {
 
 
 app.post('/start', (req, res) => {
+  if (!fs.existsSync('./logs')){
+    fs.mkdirSync('./logs');
+  }
+
   fs.writeFile(`./logs/${req.body.fileName}.txt`, '', 'utf8', (err) => {
     if (err) {
       console.error(err);
