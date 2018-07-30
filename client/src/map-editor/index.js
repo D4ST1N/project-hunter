@@ -93,6 +93,12 @@ class Editor extends Phaser.Scene {
           break;
       }
     });
+    $events.$on('editorLeave', () => {
+      if (game) {
+        game.destroy();
+        game = undefined;
+      }
+    });
     logger.log('Events subscribed', 'info');
   }
 
@@ -719,7 +725,7 @@ $events.$on('loadMap', (mapData) => {
     type: 'success',
   });
   logger.log('Loaded map');
-  const restart = map !== undefined;
+  const restart = game !== undefined;
   map = mapData.content;
   store.commit('updateMap', map);
   store.commit('selectMap', map.info.fileName);
@@ -730,12 +736,17 @@ $events.$on('loadMap', (mapData) => {
     try {
       game.scene.scenes[0].scene.restart();
     } catch (e) {
-      logger.log(e, error);
+      logger.log(e, 'error');
       throw new Error(e);
     }
   } else {
     logger.log('Start map editor');
     game = new Phaser.Game(config);
+    game.destroy = function() {
+      this.renderer.destroy();
+      this.loop.stop();
+      this.canvas.remove();
+    }
   }
 
   window.addEventListener('resize', () => {

@@ -13,15 +13,16 @@
 </template>
 
 <script>
-  import Sidebar        from '../map-editor/resources/Sidebar';
-  import OpenMaps       from '../map-editor/resources/OpenMaps';
-  import ResourceLoader from '../map-editor/resources/ResourceLoader';
-  import MeetPopup      from '../map-editor/resources/MeetPopup';
-  import MainMenu       from '../map-editor/resources/MainMenu';
-  import CreateNewMap   from '../map-editor/resources/CreateNewMap';
-  import Quests         from '../map-editor/resources/Quests';
-  import Toolbar        from '../map-editor/resources/Toolbar';
+  import Sidebar          from '../map-editor/resources/Sidebar';
+  import OpenMaps         from '../map-editor/resources/OpenMaps';
+  import ResourceLoader   from '../map-editor/resources/ResourceLoader';
+  import MeetPopup        from '../map-editor/resources/MeetPopup';
+  import MainMenu         from '../map-editor/resources/MainMenu';
+  import CreateNewMap     from '../map-editor/resources/CreateNewMap';
+  import Quests           from '../map-editor/resources/Quests';
+  import Toolbar          from '../map-editor/resources/Toolbar';
   import AboutFloatButton from '../components/AboutFloatButton';
+  import $events          from '../utils/events';
   import '../map-editor';
 
   export default {
@@ -51,6 +52,11 @@
     mounted() {
       this.$logger.log('Map Editor loaded', 'info');
     },
+
+    beforeRouteLeave (to, from, next) {
+      $events.$emit('editorLeave');
+      next();
+    }
   }
 </script>
 

@@ -1,23 +1,18 @@
 import $events from '../../utils/events';
 
 export default class Quest {
-  constructor({ name, description, init, start, complete, isActive, reward, steps = [] }) {
+  constructor({ name, description, start, complete, isActive, progress = [] }) {
     this.name = name;
     this.description = description;
-    this.init = init;
     this.start = start;
+    this.progress = progress;
     this.complete = complete;
     this.isActive = isActive;
-    this.steps = steps;
-    this.reward = reward;
     this.currentStep = null;
-
-    this.init(this);
   }
 
   setQuestStep(step) {
     this.currentStep = step;
-    this.steps[step].action(this);
   }
 
   activateQuest() {
@@ -98,7 +93,7 @@ export default class Quest {
             type: Number,
 
             items(quest) {
-              return quest.steps.map((step, index) => ({
+              return quest.progress.map((step, index) => ({
                 label: `Крок ${index}`,
                 value: index,
               }));

@@ -4,7 +4,12 @@
       <Icon slot="after" type="select_arrow_down" size="tiny" class="drop-down__arrow"></Icon>
     </Button>
     <ul :class="{ 'drop-down__items-wrapper': true, 'drop-down__items-wrapper--visible': show }">
-      <li v-for="(item, index) in items" class="drop-down__item" @click="select(item, index)">
+      <li v-if="isEmpty" class="drop-down__item" @click="select(emptyDropDown, 0)">
+        <div class="drop-down__item-content">
+          <span class="drop-down__item-label">{{ emptyDropDown.label }}</span>
+        </div>
+      </li>
+      <li v-else v-for="(item, index) in items" class="drop-down__item" @click="select(item, index)">
         <Icon
           :type="item.icon"
           size="tiny"
@@ -40,12 +45,16 @@
       return {
         show: false,
         selectedIndex: null,
+        emptyDropDown: {
+          label: 'Немає варіантів',
+          value: '',
+        },
       };
     },
 
     computed: {
       label() {
-        if (this.items.length === 0) {
+        if (this.isEmpty) {
           return 'Немає варіантів';
         }
 
@@ -54,6 +63,10 @@
         }
 
         return this.items[this.selectedIndex].label;
+      },
+
+      isEmpty() {
+        return this.items.length === 0;
       }
     },
 
@@ -110,6 +123,7 @@
       transition: all .375s;
 
       &--visible {
+        min-height: 36px;
         opacity: 1;
         pointer-events: all;
       }
