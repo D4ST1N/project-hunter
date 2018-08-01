@@ -32,6 +32,11 @@ Vue.component('Popup', Popup);
 Vue.component('Spinner', Spinner);
 Vue.component('NotificationCenter', NotificationCenter);
 
+router.beforeEach((to, from, next) => {
+  document.title = `Project Hunter | ${to.meta.title}`;
+  next()
+});
+
 new Vue({
   store,
   router,
