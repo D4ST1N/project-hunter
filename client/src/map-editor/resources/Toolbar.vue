@@ -194,7 +194,7 @@
     display: flex;
     padding: 5px 10px;
     background: rgba(69,90,100 ,.5);
-    border-radius: 10px;
+    border-radius: 5px;
 
     &__group {
       margin: 0 10px;

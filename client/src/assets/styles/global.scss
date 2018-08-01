@@ -11,6 +11,12 @@ body {
   background: rgba(38,50,56 ,1);
   padding: 5px;
   box-sizing: border-box;
+
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
 }
 
 body * {

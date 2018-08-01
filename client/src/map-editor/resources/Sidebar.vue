@@ -63,11 +63,11 @@
   .sidebar {
     position: fixed;
     width: 500px;
-    top: 16px;
-    right: 16px;
-    max-height: calc(100% - 40px);
+    top: 55px;
+    right: 5px;
+    max-height: calc(100% - 100px);
     background: rgba(69,90,100 , .5);
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 16px;
   }
 </style>

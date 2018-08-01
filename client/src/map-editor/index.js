@@ -746,7 +746,7 @@ const config = {
   width: window.innerWidth,
   height: window.innerHeight,
   backgroundColor: 'rgba(38,50,56 ,1)',
-  parent: 'phaser-example',
+  parent: 'scene',
   scene: Editor,
 };
 

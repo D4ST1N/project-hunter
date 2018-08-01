@@ -1,12 +1,28 @@
 <template>
   <div class="main-menu">
-    <Button type="transparent" @buttonClick="toggle">
-      <Icon slot="before" type="menu" />
-    </Button>
-    <div v-show="showMenu" class="main-menu__container">
-      <div v-for="menuItem in menu" :key="menuItem.name" class="main-menu__item" @click="click(menuItem)">
-        {{ menuItem.label }}
-      </div>
+    <div class="main-menu__wrapper"><router-link to="/" class="nav-link">
+      <Button :rectangular="true" class="about__button" :text="$t('Routes.Home')" size="small" type="white">
+        <Icon slot="before" size="tiny" type="castle"></Icon>
+      </Button>
+    </router-link>
+      <Button
+        :rectangular="true"
+        :text="$t('Map.Load.Action')"
+        type="white"
+        size="small"
+        @buttonClick="openMap"
+      >
+        <Icon slot="before" type="map" size="tiny"></Icon>
+      </Button>
+      <Button
+        :rectangular="true"
+        :text="$t('Map.Create.Action')"
+        type="white"
+        size="tiny"
+        @buttonClick="createMap"
+      >
+        <Icon slot="before" type="add" size="tiny"></Icon>
+      </Button>
     </div>
   </div>
 </template>
@@ -19,55 +35,30 @@
 
     data() {
       return {
-        showMenu: false,
-        menu: [
-          {
-            name: 'open',
-            label: this.$t('Action.Open'),
-
-            action() {
-              $events.$emit('showOpenMaps');
-              this.toggle();
-            },
-          },
-          {
-            name: 'create',
-            label: this.$t('Action.Create'),
-
-            action() {
-              $events.$emit('showCreateMap');
-              this.toggle();
-            },
-          },
-          {
-            name: 'home',
-            label: this.$t('Routes.Home'),
-
-            action() {
-              this.$router.push('/');
-            },
-          },
-        ]
       }
     },
 
     methods: {
-      click(button) {
-        button.action.call(this);
+      openMap() {
+        $events.$emit('showOpenMaps');
       },
 
-      toggle() {
-        this.showMenu = !this.showMenu;
-      }
+      createMap() {
+        $events.$emit('showCreateMap');
+      },
     }
   }
 </script>
 
 <style lang="scss">
   .main-menu {
-    position: fixed;
-    top: 0;
-    left: 0;
+
+    &__wrapper {
+      padding: 5px 10px;
+      border-radius: 5px;
+      background: rgba(120,144,156 ,.2);
+      margin-bottom: 10px;
+    }
 
     &__container {
       position: absolute;

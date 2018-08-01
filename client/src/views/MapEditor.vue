@@ -1,13 +1,17 @@
 <template>
   <div class="editor" id="editor">
+    <div class="editor__header">
+      <MainMenu />
+    </div>
+    <div class="editor__content">
+      <OpenMaps />
+    </div>
+    <div id="scene"></div>
     <Sidebar />
     <Toolbar />
-    <MeetPopup />
-    <OpenMaps />
     <ResourceLoader />
     <CreateNewMap />
     <Quests />
-    <MainMenu />
     <AboutFloatButton />
   </div>
 </template>
@@ -16,7 +20,6 @@
   import Sidebar          from '../map-editor/resources/Sidebar';
   import OpenMaps         from '../map-editor/resources/OpenMaps';
   import ResourceLoader   from '../map-editor/resources/ResourceLoader';
-  import MeetPopup        from '../map-editor/resources/MeetPopup';
   import MainMenu         from '../map-editor/resources/MainMenu';
   import CreateNewMap     from '../map-editor/resources/CreateNewMap';
   import Quests           from '../map-editor/resources/Quests';
@@ -32,7 +35,6 @@
       OpenMaps,
       Toolbar,
       ResourceLoader,
-      MeetPopup,
       CreateNewMap,
       MainMenu,
       Quests,
@@ -62,5 +64,10 @@
 
 <style lang="scss">
   .editor {
+
+    &__header, &__content {
+      position: relative;
+      z-index: 1;
+    }
   }
 </style>
