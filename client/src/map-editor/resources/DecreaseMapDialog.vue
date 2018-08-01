@@ -1,12 +1,12 @@
 <template>
   <div class="enlarge-map-dialog" v-show="show" :style="dialogStyles">
     <div class="enlarge-map-dialog__content">
-      <p>Зменшити карту</p>
-      <Button text="Зліва" type="white" :button="{ type: 'left' }" @buttonClick="click"/>
-      <Button text="Справа" type="white" :button="{ type: 'right' }" @buttonClick="click"/>
-      <Button text="Зверху" type="white" :button="{ type: 'up' }" @buttonClick="click"/>
-      <Button text="Знизу" type="white" :button="{ type: 'down' }" @buttonClick="click"/>
-      <Button text="Закрити" @buttonClick="show = false"/>
+      <p>{{ $t('Map.ChangeSize.Decrease.Action') }}</p>
+      <Button :text="$t('Map.ChangeSize.Left')" :rectangular="true" type="white" :button="{ type: 'left' }" @buttonClick="click"/>
+      <Button :text="$t('Map.ChangeSize.Right')" :rectangular="true" type="white" :button="{ type: 'right' }" @buttonClick="click"/>
+      <Button :text="$t('Map.ChangeSize.Up')" :rectangular="true" type="white" :button="{ type: 'up' }" @buttonClick="click"/>
+      <Button :text="$t('Map.ChangeSize.Down')" :rectangular="true" type="white" :button="{ type: 'down' }" @buttonClick="click"/>
+      <Button :text="$t('Action.Close')" @buttonClick="show = false"/>
     </div>
   </div>
 </template>

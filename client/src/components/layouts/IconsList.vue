@@ -2,7 +2,7 @@
   <div class="icons-list">
     <div class="icons-list__toolbar">
       <router-link to="/" class="nav-link">
-        <Button :squash="true" class="about__button" text="На головну" size="small" type="white">
+        <Button :squash="true" class="about__button" :text="$t('Routes.Home')" size="small" type="white">
           <Icon slot="before" size="small" type="castle"></Icon>
         </Button>
       </router-link>
@@ -27,24 +27,28 @@
         size: 'large',
         sizes: [
           {
-            label: 'Tiny',
+            label: this.$t('Icons.Sizes.X-Small'),
+            value: 'x-small',
+          },
+          {
+            label: this.$t('Icons.Sizes.Tiny'),
             value: 'tiny',
           },
           {
-            label: 'Small',
+            label: this.$t('Icons.Sizes.Small'),
             value: 'small',
           },
           {
-            label: 'Medium',
+            label: this.$t('Icons.Sizes.Medium'),
             value: 'medium',
           },
           {
-            label: 'Large',
+            label: this.$t('Icons.Sizes.Large'),
             value: 'large',
             selected: true,
           },
           {
-            label: 'Huge',
+            label: this.$t('Icons.Sizes.Huge'),
             value: 'huge',
           },
         ]
@@ -60,7 +64,7 @@
         .catch((error) => {
           this.$logger.log(error, 'error');
           $events.$emit('showNotification', {
-            title: 'Сталась помилка під час завантаження іконок.',
+            title: this.$t('Icons.Error'),
           });
         });
     },

@@ -18,7 +18,7 @@
           </Button>
         </div>
       </div>
-      <Button text="Додати дію" :rectangular="true" type="blue" size="tiny" @buttonClick="showAddActionPopup">
+      <Button :text="$t('QuestEditor.Action.Add')" :rectangular="true" type="blue" size="tiny" @buttonClick="showAddActionPopup">
         <Icon slot="before" type="add" size="x-small"></Icon>
       </Button>
     </div>

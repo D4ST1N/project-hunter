@@ -1,6 +1,6 @@
 <template>
   <div class="tiles">
-    <h2 class="tiles__title">Тайли</h2>
+    <h2 class="tiles__title">{{ $t('Map.Tile.Label') }}</h2>
     <div
       v-for="tile in tiles"
       :key="tile.name"

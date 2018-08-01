@@ -5,22 +5,22 @@
         <div class="popup__content">
           <div class="about__wrapper">
             <div class="about__item">
-              <span class="about__item-label">Версія клієнту:</span>
+              <span class="about__item-label">{{ $t('About.Version.Client') }}:</span>
               <span class="about__item-value">{{ client.version }}</span>
             </div>
             <div class="about__item">
-              <span class="about__item-label">Версія серверу:</span>
+              <span class="about__item-label">{{ $t('About.Version.Server') }}:</span>
               <span class="about__item-value">{{ server.version }}</span>
             </div>
-            <Button text="Інформація про версії" size="medium" type="white" @buttonClick="getInfo">
+            <Button :text="$t('About.Info')" :rectangular="true" size="medium" type="white" @buttonClick="getInfo">
               <Icon slot="before" size="small" type="info"></Icon>
               <Spinner v-show="showLoader" slot="after" color="blue" />
             </Button>
-            <Button v-if="popup" class="about__button" text="Закрити" size="medium" type="white" @buttonClick="close">
+            <Button v-if="popup" class="about__button" :text="$t('Action.Close')" :rectangular="true" size="medium" type="white" @buttonClick="close">
               <Icon slot="before" size="small" type="cancel"></Icon>
             </Button>
             <router-link v-else to="/" class="nav-link">
-              <Button class="about__button" text="На головну" size="medium" type="white">
+              <Button class="about__button" :text="$t('Routes.Home')" :rectangular="true" size="medium" type="white">
                 <Icon slot="before" size="small" type="castle"></Icon>
               </Button>
             </router-link>
@@ -33,7 +33,7 @@
                       * * * * * * * * * * * * * * *  * * * * * *
                     </div>
                   </div>
-                  <Button text="Закрити" type="white" size="small" @buttonClick="versionInfo = []">
+                  <Button :text="$t('Action.Close')" :rectangular="true" type="white" size="small" @buttonClick="versionInfo = []">
                     <Icon slot="before" size="small" type="cancel"></Icon>
                   </Button>
                 </div>

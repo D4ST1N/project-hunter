@@ -23,7 +23,7 @@
         menu: [
           {
             name: 'open',
-            label: 'Відкрити',
+            label: this.$t('Action.Open'),
 
             action() {
               $events.$emit('showOpenMaps');
@@ -32,7 +32,7 @@
           },
           {
             name: 'create',
-            label: 'Створити',
+            label: this.$t('Action.Create'),
 
             action() {
               $events.$emit('showCreateMap');
@@ -41,20 +41,12 @@
           },
           {
             name: 'home',
-            label: 'На головну',
+            label: this.$t('Routes.Home'),
 
             action() {
               this.$router.push('/');
             },
           },
-          // {
-          //   name: 'change',
-          //   label: 'Змінити інформацію про карту',
-          //
-          //   action(button) {
-          //
-          //   },
-          // },
         ]
       }
     },

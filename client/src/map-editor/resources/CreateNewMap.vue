@@ -2,32 +2,32 @@
   <div class="create-new-popup popup" v-if="show">
     <div class="popup__overlay">
       <div class="popup__content">
-        <h2 class="popup__title">Створити нову карту</h2>
+        <h2 class="popup__title">{{ $t('Map.Create.Action') }}</h2>
         <div class="popup__container create-new-popup__container">
           <div class="create-new-popup__item create-new-popup__item--row">
             <div class="create-new-popup__item create-new-popup__item--half create-new-popup__item--row">
-              <label for="map-width" class="create-new-popup__label">Ширина карти</label>
+              <label for="map-width" class="create-new-popup__label">{{ $t('Map.Properties.Width.Label') }}</label>
               <input type="number" v-model="width" class="create-new-popup__input create-new-popup__input--number" id="map-width">
             </div>
             <div class="create-new-popup__item create-new-popup__item--half create-new-popup__item--row">
-              <label for="map-height" class="create-new-popup__label">Висота карти</label>
+              <label for="map-height" class="create-new-popup__label">{{ $t('Map.Properties.Height.Label') }}</label>
               <input type="number" v-model="height" class="create-new-popup__input create-new-popup__input--number" id="map-height">
             </div>
           </div>
           <div class="create-new-popup__item">
-            <label for="map-name" class="create-new-popup__label">Назва карти</label>
+            <label for="map-name" class="create-new-popup__label">{{ $t('Map.Properties.Name.Label') }}</label>
             <input type="text" v-model="name" class="create-new-popup__input" id="map-name">
           </div>
           <div class="create-new-popup__item">
-            <label for="map-description" class="create-new-popup__label">Опис карти</label>
+            <label for="map-description" class="create-new-popup__label">{{ $t('Map.Properties.Description.Label') }}</label>
             <textarea v-model="description" class="create-new-popup__input" id="map-description"></textarea>
           </div>
           <div class="create-new-popup__item">
-            <label for="map-file-name" class="create-new-popup__label">Назва файлу карти</label>
+            <label for="map-file-name" class="create-new-popup__label">{{ $t('Map.Properties.FileName.Label') }}</label>
             <input type="text" v-model="fileName" class="create-new-popup__input" id="map-file-name">
           </div>
           <div class="create-new-popup__item">
-            <div class="create-new-popup__label">Базовий тайл</div>
+            <div class="create-new-popup__label">{{ $t('Map.Properties.BaseTile.Label') }}</div>
             <div class="create-new-popup__item-container">
               <div
                 v-for="tile in tiles"
@@ -42,11 +42,11 @@
           </div>
         </div>
         <div class="popup__footer">
-          <Button type="green" text="Створити" size="small" @buttonClick="create">
-            <Icon slot="before" type="add_mono" size="small"></Icon>
+          <Button type="green" :text="$t('Action.Create')" :rectangular="true" size="small" @buttonClick="create">
+            <Icon slot="before" type="add_mono" size="tiny"></Icon>
           </Button>
-          <Button type="red" text="Відміна" size="small" @buttonClick="cancel">
-            <Icon slot="before" type="cancel_mono" size="small"></Icon>
+          <Button type="red" :text="$t('Action.Cancel')" :rectangular="true" size="small" @buttonClick="cancel">
+            <Icon slot="before" type="cancel_mono" size="tiny"></Icon>
           </Button>
         </div>
       </div>
@@ -69,9 +69,9 @@
         show: false,
         width: 10,
         height: 10,
-        name: "Нова мапа",
-        description: "Опис карти...",
-        fileName: "new map",
+        name: this.$t('Map.Properties.Name.Value.Default'),
+        description: this.$t('Map.Properties.Description.Value.Default'),
+        fileName: this.$t('Map.Properties.FileName.Value.Default'),
       }
     },
 

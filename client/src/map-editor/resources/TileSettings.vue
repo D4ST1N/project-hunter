@@ -1,12 +1,12 @@
 <template>
   <div class="tile-settings">
-    <h2 class="tile-settings__title">Налаштування тайлу</h2>
+    <h2 class="tile-settings__title">{{ $t('Map.Tile.Settings.Label') }}</h2>
     <div class="tile-settings__content" v-if="showInfo">
       <div class="tile-settings__info-item">
-        Тайл: <span class="tile-settings__info-item-value">{{ info.tile }}</span>
+        {{ $t('Map.Tile.Settings.Tile') }}: <span class="tile-settings__info-item-value">{{ info.tile }}</span>
       </div>
       <div class="tile-settings__info-item">
-        Координати:
+        {{ $t('Map.Tile.Settings.Coordinates') }}:
         <br />
         x: <span class="tile-settings__info-item-value">{{ info.position.x }}</span>
         <br />
@@ -14,11 +14,11 @@
         <br />
         z: <span class="tile-settings__info-item-value">{{ info.position.z }}</span>
         <br />
-        <Button text="Підняти рівень тайлу" @buttonClick="zUp"/>
-        <Button text="Опустити рівень тайлу" @buttonClick="zDown"/>
+        <Button :text="$t('Map.Tile.Action.Up')" @buttonClick="zUp"/>
+        <Button :text="$t('Map.Tile.Action.Down')" @buttonClick="zDown"/>
       </div>
       <div class="tile-settings__info-item" v-show="!!getDecoration().length">
-        Декорації:
+        {{ $t('Map.Tile.Settings.Decorations') }}:
         <div class="tile-settings__decoration">
           <div
             v-for="decor in getDecoration()"

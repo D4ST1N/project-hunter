@@ -14,7 +14,7 @@
                   <QuestAction :action="action" />
                 </div>
                 <Button
-                  text="Додати дію"
+                  :text="$t('QuestEditor.Action.Add')"
                   type="white"
                   size="small"
                   @buttonClick="showAddActionWindow(parameter)"
@@ -26,10 +26,10 @@
             </div>
           </div>
         </div>
-        <Button text="Додати" type="green" size="small"  @buttonClick="submit">
+        <Button :text="$t('Action.Add')" type="green" size="small"  @buttonClick="submit">
           <Icon slot="before" type="add_mono" size="tiny"></Icon>
         </Button>
-        <Button text="Відмінити" type="red" size="small" @buttonClick="cancel">
+        <Button :text="$t('Action.Cancel')" type="red" size="small" @buttonClick="cancel">
           <Icon slot="before" type="cancel_mono" size="tiny"></Icon>
         </Button>
       </div>

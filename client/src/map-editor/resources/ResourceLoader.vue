@@ -1,6 +1,6 @@
 <template>
   <div class="resource-loader" v-show="show">
-    <div class="resource-loader__title">Завантаження карти...</div>
+    <div class="resource-loader__title">{{ $t('Loading') }}...</div>
     <div class="resource-loader__progress-bar">
       <div class="resource-loader__progress" :style="{ width: `${progress}%` }">
         <div class="resource-loader__progress-percent">{{ progress }}%</div>

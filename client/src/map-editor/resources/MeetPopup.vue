@@ -2,15 +2,14 @@
   <div class="meet-popup popup" v-show="show">
     <div class="popup__overlay">
       <div class="popup__content">
-        <h2 class="popup__title">Хало!</h2>
         <div class="popup__container meet-popup__container">
           <div class="meet-popup__item" @click="showMaps">
             <Icon type="map" class="meet-popup__icon" />
-            <span>Відкрити карту</span>
+            <span>{{ $t('Map.Load.Action') }}</span>
           </div>
           <div class="meet-popup__item" @click="createMap">
             <Icon type="map_mono" class="meet-popup__icon" />
-            <span>Створити нову карту</span>
+            <span>{{ $t('Map.Create.Action') }}</span>
           </div>
         </div>
       </div>

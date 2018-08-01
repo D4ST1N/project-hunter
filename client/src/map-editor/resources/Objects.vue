@@ -1,6 +1,6 @@
 <template>
   <div class="objects">
-    <h2 class="objects__title">Декорації</h2>
+    <h2 class="objects__title">{{ $t('Map.Decor.Label') }}</h2>
     <div class="objects__search">
       <input type="text" class="objects__search-input" title="search">
       <Button v-show="showCancel" class="objects__search-button">
@@ -14,7 +14,7 @@
           <Icon slot="before" type="return" size="huge" class="objects__return-icon" />
         </Button>
         <div class="objects__folder-name">
-          Назад
+          {{ $t('Action.Back') }}
         </div>
       </div>
       <div

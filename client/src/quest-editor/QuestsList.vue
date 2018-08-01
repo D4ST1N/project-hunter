@@ -16,7 +16,7 @@
     </div>
     <Button
       :rectangular="true"
-      text="Завантажити квест"
+      :text="$t('QuestEditor.Quest.Load.Action')"
       type="white"
       size="tiny"
       @buttonClick="submit"

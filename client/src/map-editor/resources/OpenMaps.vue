@@ -2,7 +2,7 @@
   <div class="open-maps popup" v-if="show">
     <div class="popup__overlay">
       <div class="popup__content">
-        <h2 class="popup__title">Відкрити карту</h2>
+        <h2 class="popup__title">{{ $t('Map.Load.Action') }}</h2>
         <div class="popup__container popup__container--horizontal">
           <div
             v-for="map in maps"
@@ -15,11 +15,11 @@
           </div>
         </div>
         <div class="open-maps__footer">
-          <Button type="green" text="Вибрати" size="small" @buttonClick="openMap">
-            <Icon slot="before" type="hand" size="small"></Icon>
+          <Button type="green" :text="$t('Action.Select')" :rectangular="true" size="small" @buttonClick="openMap">
+            <Icon slot="before" type="hand" size="tiny"></Icon>
           </Button>
-          <Button type="red" text="Відміна" size="small" @buttonClick="cancel">
-            <Icon slot="before" type="cancel_mono" size="small"></Icon>
+          <Button type="red" :text="$t('Action.Cancel')" :rectangular="true" size="small" @buttonClick="cancel">
+            <Icon slot="before" type="cancel_mono" size="tiny"></Icon>
           </Button>
         </div>
       </div>
@@ -58,7 +58,7 @@
       }).catch((error) => {
         this.$logger.log(error, 'error');
         $events.$emit('showNotification', {
-          title: 'Сталась помилка під час завантаження карт.',
+          title: this.$t('Map.Load.Error'),
         });
       });
     },

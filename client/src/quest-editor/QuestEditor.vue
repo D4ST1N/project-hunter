@@ -2,13 +2,13 @@
   <div class="quest-editor">
     <div class="quest-editor__menu">
       <router-link to="/" class="nav-link">
-        <Button :rectangular="true" class="about__button" text="На головну" size="small" type="white">
+        <Button :rectangular="true" class="about__button" :text="$t('Routes.Home')" size="small" type="white">
           <Icon slot="before" size="tiny" type="castle"></Icon>
         </Button>
       </router-link>
       <Button
         :rectangular="true"
-        text="Список квестів"
+        :text="$t('QuestEditor.Quest.List')"
         type="white"
         size="small"
         @buttonClick="showQuests"
@@ -19,7 +19,7 @@
       <Button
         v-if="!showNewQuest"
         :rectangular="true"
-        text="Створити квест"
+        :text="$t('QuestEditor.Quest.Add')"
         type="white"
         size="tiny"
         @buttonClick="addQuest"
@@ -81,7 +81,7 @@
         }).catch((error) => {
           this.$logger.log(error, 'error');
           $events.$emit('showNotification', {
-            title: 'Сталась помилка під час завантаження квестів.',
+            title: this.$t('QuestEditor.Quest.Load.Error'),
           });
         });
       },

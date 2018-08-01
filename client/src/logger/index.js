@@ -1,5 +1,3 @@
 import Logger from '../resources/entities/Logger';
 
-const index = new Logger({ level: 'info' });
-
-export default index;
+export default new Logger({ level: 'info' });

@@ -7,14 +7,14 @@
         type="text"
         title="Quest name"
       >
-      <Button :rectangular="true" text="Редагувати опис" type="white" size="tiny">
+      <Button :rectangular="true" :text="$t('QuestEditor.Part.Description.Edit')" type="white" size="tiny">
         <Icon slot="before" type="edit" size="tiny"></Icon>
       </Button>
     </div>
     <div class="new-quest__content">
       <div class="new-quest__section new-quest__section--start">
         <div class="new-quest__section-title">
-          Старт
+          {{ $t('QuestEditor.Phase.Start') }}
         </div>
         <div class="new-quest__section-content">
           <ActionsList
@@ -26,7 +26,7 @@
             @removeList="removeStep(quest.start, index)"
           />
           <Button
-            text="Додати крок"
+            :text="$t('QuestEditor.Step.Add')"
             :rectangular="true"
             type="blue"
             size="small"
@@ -38,7 +38,7 @@
       </div>
       <div class="new-quest__section new-quest__section--progress">
         <div class="new-quest__section-title">
-          Прогрес
+          {{ $t('QuestEditor.Phase.Progress') }}
         </div>
         <div class="new-quest__section-content">
           <ActionsList
@@ -50,7 +50,7 @@
             @removeList="removeStep(quest.progress, index)"
           />
           <Button
-            text="Додати крок"
+            :text="$t('QuestEditor.Step.Add')"
             :rectangular="true"
             type="blue"
             size="small"
@@ -62,7 +62,7 @@
       </div>
       <div class="new-quest__section new-quest__section--complete">
         <div class="new-quest__section-title">
-          Завершення
+          {{ $t('QuestEditor.Phase.Complete') }}
         </div>
         <div class="new-quest__section-content">
           <ActionsList
@@ -74,7 +74,7 @@
             @removeList="removeStep(quest.complete, index)"
           />
           <Button
-            text="Додати крок"
+            :text="$t('QuestEditor.Step.Add')"
             :rectangular="true"
             type="blue"
             size="small"
@@ -86,10 +86,10 @@
       </div>
     </div>
     <div class="new-quest__footer">
-      <Button text="Зберегти квест" :rectangular="true" type="green" size="small" @buttonClick="save">
+      <Button :text="$t('QuestEditor.Quest.Save.Action')" :rectangular="true" type="green" size="small" @buttonClick="save">
         <Icon slot="before" type="save" size="tiny"></Icon>
       </Button>
-      <Button text="Відмінити" :rectangular="true" type="red" size="small" @buttonClick="cancel">
+      <Button :text="$t('Action.Cancel')" :rectangular="true" type="red" size="small" @buttonClick="cancel">
         <Icon slot="before" type="cancel_mono" size="tiny"></Icon>
       </Button>
     </div>
@@ -99,7 +99,6 @@
 <script>
   import QuestAction   from './QuestAction';
   import ActionsList   from './ActionsList';
-  import AddStepWindow from './AddStepWindow';
   import API           from '../services/API';
   import $events       from '../utils/events';
 
@@ -108,7 +107,6 @@
     components: {
       QuestAction,
       ActionsList,
-      AddStepWindow,
     },
 
     data() {
@@ -117,8 +115,8 @@
         showAddStepWindow: false,
         where: null,
         quest: {
-          name: 'Новий квест',
-          description: 'Опис Завдання',
+          name: this.$t('QuestEditor.Quest.New'),
+          description: this.$t('QuestEditor.Part.Description.Label'),
           start: [],
           progress: [],
           complete: [],
@@ -127,7 +125,6 @@
     },
 
     mounted() {
-      this.$store.commit('disableInput');
       $events.$on('loadQuest', (quest) => {
         this.quest = quest.content;
       });
@@ -165,14 +162,14 @@
           .then((response) => {
             this.$logger.log(response.data);
             $events.$emit('showNotification', {
-              title: 'Квест збережено успішно.',
+              title: this.$t('QuestEditor.Quest.Save.Success'),
               type: 'success',
             });
           })
           .catch((error) => {
             this.$logger.log(error, 'error');
             $events.$emit('showNotification', {
-              title: 'Сталась помилка під час збереження карти.',
+              title: this.$t('QuestEditor.Quest.Save.Error'),
             });
           });
       },

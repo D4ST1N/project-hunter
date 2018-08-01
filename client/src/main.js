@@ -2,6 +2,7 @@ import Vue                from 'vue';
 import App                from './App.vue';
 import store              from './store'
 import router             from './router';
+import i18n               from './i18n';
 import AddActionWindow    from './quest-editor/AddActionWindow';
 // UI Components
 import Button             from './components/ui/Button';
@@ -38,6 +39,7 @@ router.beforeEach((to, from, next) => {
 });
 
 new Vue({
+  i18n,
   store,
   router,
   render: h => h(App),

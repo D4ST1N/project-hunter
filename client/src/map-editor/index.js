@@ -15,6 +15,7 @@ import PlayerPrototype      from '../resources/entities/Player';
 import Quest                from '../resources/entities/Quest';
 import test                 from '../resources/quests/test';
 import logger               from '../logger';
+import i18n                 from '../i18n';
 
 let map;
 let game;
@@ -129,14 +130,14 @@ class Editor extends Phaser.Scene {
       .then((response) => {
         logger.log(response.data);
         $events.$emit('showNotification', {
-          title: 'Карта збережена успішно.',
+          title: i18n.t('Map.Save.Success'),
           type: 'success',
         });
       })
       .catch((error) => {
         logger.log(error, 'error');
         $events.$emit('showNotification', {
-          title: 'Сталась помилка під час збереження карти.',
+          title: i18n.t('Map.Save.Error'),
         });
       });
   }
@@ -198,6 +199,14 @@ class Editor extends Phaser.Scene {
   decreaseMap(direction) {
     logger.log('decrease map');
     if (direction === 'down') {
+      if (this.map.length === 1) {
+        $events.$emit('showNotification', {
+          title: i18n.t('Map.ChangeSize.Decrease.Vertical.Error'),
+        });
+
+        return;
+      }
+
       try {
         this.map[this.map.length - 1].forEach((sprite) => {
           sprite.destroy();
@@ -210,6 +219,14 @@ class Editor extends Phaser.Scene {
     }
 
     if (direction === 'right') {
+      if (this.map[0].length === 1) {
+        $events.$emit('showNotification', {
+          title: i18n.t('Map.ChangeSize.Decrease.Horizontal.Error'),
+        });
+
+        return;
+      }
+
       try {
         map.geo.forEach(row => row.pop());
         this.map.forEach((row) => {
@@ -222,6 +239,14 @@ class Editor extends Phaser.Scene {
     }
 
     if (direction === 'up') {
+      if (this.map.length === 1) {
+        $events.$emit('showNotification', {
+          title: i18n.t('Map.ChangeSize.Decrease.Vertical.Error'),
+        });
+
+        return;
+      }
+
       try {
         map.geo.shift();
         this.map[0].forEach((sprite) => {
@@ -236,6 +261,14 @@ class Editor extends Phaser.Scene {
     }
 
     if (direction === 'left') {
+      if (this.map[0].length === 1) {
+        $events.$emit('showNotification', {
+          title: i18n.t('Map.ChangeSize.Decrease.Horizontal.Error'),
+        });
+
+        return;
+      }
+
       try {
         map.geo.forEach(row => row.shift());
         this.map.forEach((row) => {
@@ -634,7 +667,7 @@ class Editor extends Phaser.Scene {
 
     if (x < decor.grid.size.width - 1 || y < decor.grid.size.height - 1) {
       $events.$emit('showNotification', {
-        title: 'Неможливо поставити декорацію за межами карти'
+        title: i18n.t('Map.Decor.Error.OutOfMap'),
       });
 
       return;
@@ -719,7 +752,7 @@ const config = {
 
 $events.$on('loadMap', (mapData) => {
   $events.$emit('showNotification', {
-    title: 'Карта завантажена успішно.',
+    title: i18n.t('Map.Load.Success'),
     type: 'success',
   });
   logger.log('Loaded map');
