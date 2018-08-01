@@ -63,6 +63,11 @@
       height: 16px;
     }
 
+    &--x-small {
+      width: 12px;
+      height: 12px;
+    }
+
     &--big {
       width: 48px;
       height: 48px;
@@ -156,6 +161,10 @@
 
     &--hand {
       @include icon('hand');
+    }
+
+    &--trash {
+      @include icon('trash');
     }
 
     &--search {

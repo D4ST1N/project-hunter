@@ -26,6 +26,14 @@
       squash: {
         type: Boolean,
         default: false,
+      },
+      rectangular: {
+        type: Boolean,
+        default: false,
+      },
+      stop: {
+        type: Boolean,
+        default: false,
       }
     },
 
@@ -48,12 +56,17 @@
           [`button--${this.type}`]: !!this.type,
           [`button--${this.size}`]: true,
           ['button--squash']: this.squash,
+          ['button--rectangle']: this.rectangular,
         };
       },
     },
 
     methods: {
       buttonClick(event) {
+        if (this.stop) {
+          event.stopPropagation();
+        }
+
         this.$emit('buttonClick', this.button, event);
       }
     }
@@ -159,6 +172,10 @@
 
     &--squash {
       padding: 4px;
+      border-radius: 4px;
+    }
+
+    &--rectangle {
       border-radius: 4px;
     }
 

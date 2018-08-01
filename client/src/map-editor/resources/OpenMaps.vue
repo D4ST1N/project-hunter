@@ -55,7 +55,12 @@
             content: JSON.parse(map.content)
           })
         });
-      }).catch(console.error);
+      }).catch((error) => {
+        this.$logger.log(error, 'error');
+        $events.$emit('showNotification', {
+          title: 'Сталась помилка під час завантаження карт.',
+        });
+      });
     },
 
     methods: {

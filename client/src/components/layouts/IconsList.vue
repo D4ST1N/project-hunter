@@ -16,6 +16,7 @@
 
 <script>
   import API from '../../services/API';
+  import $events from '../../utils/events';
 
   export default {
     name: "IconsList",
@@ -56,7 +57,12 @@
         .then((response) => {
           this.icons = response.data.map(icon => icon.split('.svg')[0]);
         })
-        .catch(console.error);
+        .catch((error) => {
+          this.$logger.log(error, 'error');
+          $events.$emit('showNotification', {
+            title: 'Сталась помилка під час завантаження іконок.',
+          });
+        });
     },
 
     methods: {

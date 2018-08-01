@@ -67,15 +67,15 @@ export default class Quest {
   static getStepActionsList() {
     return [
       {
-        method: 'activateStep',
+        action: 'activateStep',
         description: 'Зробити цей крок активним',
       },
       {
-        method: 'completeStep',
+        action: 'completeStep',
         description: 'Зробити цей крок виконаним',
       },
       {
-        method: 'failStep',
+        action: 'failStep',
         description: 'Провалити цей крок',
       },
     ];
@@ -84,13 +84,13 @@ export default class Quest {
   static getActionsList() {
     return [
       {
-        method: 'setQuestStep',
+        action: 'setProgressStep',
         description: 'Перейти на інший крок квесту',
         params: [
           {
             name: 'step',
             description: 'Який крок квесту виконати',
-            type: Number,
+            type: 'Number',
 
             items(quest) {
               return quest.progress.map((step, index) => ({
@@ -102,114 +102,114 @@ export default class Quest {
         ],
       },
       {
-        method: 'start',
+        action: 'start',
         description: 'Виконати "Старт квесту"',
       },
       {
-        method: 'complete',
+        action: 'complete',
         description: 'Виконати "Завершення квесту"',
       },
       {
-        method: 'activateQuest',
+        action: 'activateQuest',
         description: 'Зробити квест активним',
       },
       {
-        method: 'deactivateQuest',
+        action: 'deactivateQuest',
         description: 'Зробити квест неактивним',
       },
       {
-        method: 'startQuest',
+        action: 'startQuest',
         description: 'Земітити старт квесту, щоб він з\'явився в списку активних квестів',
       },
       {
-        method: 'completeQuest',
+        action: 'completeQuest',
         description: 'Завершити квест',
       },
       {
-        method: 'onBlockEnter',
+        action: 'onBlockEnter',
         description: 'При відвіданні блоку виконати дію',
         params: [
           {
             name: 'x',
             description: 'X - координата',
-            type: Number,
+            type: 'Number',
           },
           {
             name: 'y',
             description: 'Y - координата',
-            type: Number,
+            type: 'Number',
           },
           {
             name: 'action',
             description: 'Дія, яку потрібно виконати',
-            type: Function,
+            type: 'Function',
             actions: [],
           },
         ],
       },
       {
-        method: 'onRectangleAreaEnter',
+        action: 'onRectangleAreaEnter',
         description: 'При відвіданні прямокутної області виконати дію',
         params: [
           {
             name: 'topLeft',
             description: 'Координати лівого верхнього блоку',
-            type: Object,
+            type: 'Object',
             fields: [
               {
                 name: 'x',
-                type: Number,
+                type: 'Number',
               },
               {
                 name: 'y',
-                type: Number,
+                type: 'Number',
               },
             ],
           },
           {
             name: 'bottomRight',
             description: 'Координати правого нижнього блоку',
-            type: Object,
+            type: 'Object',
             fields: [
               {
                 name: 'x',
-                type: Number,
+                type: 'Number',
               },
               {
                 name: 'y',
-                type: Number,
+                type: 'Number',
               },
             ],
           },
           {
             name: 'action',
             description: 'Дія, яку потрібно виконати',
-            type: Function,
+            type: 'Function',
           },
         ],
       },
       {
-        method: 'onBlocksListEnter',
+        action: 'onBlocksListEnter',
         description: 'При відвіданні одного з масиву блоків',
         params: [
           {
             name: 'action',
             description: 'Дія, яку потрібно виконати',
-            type: Function,
+            type: 'Function',
           },
           {
             name: 'block',
             description: 'Координати блоку',
-            type: Object,
+            type: 'Object',
             multiple: true,
             fields: [
               {
                 name: 'x',
-                type: Number,
+                type: 'Number',
               },
               {
                 name: 'y',
-                type: Number,
+                type: 'Number',
               },
             ],
           },

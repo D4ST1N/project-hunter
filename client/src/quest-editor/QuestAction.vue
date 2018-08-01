@@ -1,12 +1,11 @@
 <template>
   <div :class="{ 'quest-action': true, 'quest-action--offset': offset }">
     <div class="quest-action__content">
-      <span class="quest-action__method-name">{{ action.method }}</span>
+      <span class="quest-action__method-name">{{ action.action }}</span>
       <span class="quest-action__bracket">(</span>
-      <span v-for="parameter in action.params" class="quest-action__parameter">
-        <span class="quest-action__parameter-name">{{ parameter.name }}:</span>
+      <span v-for="(parameter, index) in action.params" :key="index" class="quest-action__parameter">
         <span class="quest-action__parameter-value" v-if="parameter.value !== undefined">{{ parameter.value }}</span>
-        <span class="quest-action__parameter-value" v-else="parameter.actions">
+        <span class="quest-action__parameter-value" v-else-if="parameter.actions">
           <QuestAction v-for="(action, index) in parameter.actions" :key="index" :action="action" :offset="false"></QuestAction>
         </span>
       </span>
@@ -38,7 +37,7 @@
 
 <style lang="scss">
  .quest-action {
-   padding: 5px;
+   padding: 2px 5px;
    margin: 2px 5px 2px 0;
    background: rgba(207,216,220 ,.2);
    border-radius: 5px;
@@ -66,14 +65,9 @@
      border-radius: 5px;
      margin: 2px 5px;
 
-     &-name {
-       opacity: .8;
-     }
-
      &-value {
        display: inline-block;
        font-weight: 600;
-       margin-left: 5px;
      }
    }
  }

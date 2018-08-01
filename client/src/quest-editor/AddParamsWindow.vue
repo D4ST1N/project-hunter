@@ -5,7 +5,7 @@
         <h2 class="add-params-window__title">{{ action.method }}</h2>
         <div class="add-params-window__params-wrapper">
           <div v-for="parameter in action.params" class="add-params-window__parameter">
-            <div class="add-params-window__parameter-name">{{ parameter.name }} ({{ parameter.type.name }}):</div>
+            <div class="add-params-window__parameter-name">{{ parameter.name }} ({{ parameter.type }}):</div>
             {{ items(parameter) }}
             <div class="add-params-window__value-wrapper">
               <DropDown v-if="parameter.items" :items="parameter.items(quest)" @select="selectItem(parameter, ...arguments)" />
@@ -67,7 +67,18 @@
 
     methods: {
       submit() {
-        this.$emit('submit', this.action);
+        const action = Object.assign({}, this.action);
+        action.params.forEach((param) => {
+          delete param.description;
+          delete param.name;
+          delete param.items;
+          delete param.multiple;
+
+          if (param.type === 'Number') {
+            param.value = parseFloat(param.value);
+          }
+        });
+        this.$emit('submit', action);
       },
 
       cancel() {
@@ -75,7 +86,7 @@
       },
 
       parameterType(type) {
-        switch (type.name) {
+        switch (type) {
           case 'Number':
             return 'number';
           case 'Function':

@@ -10,22 +10,7 @@
           <Icon type="search" size="small" class="objects__search-icon objects__search-icon--right" />
         </div>
         <div class="add-action-window__content">
-          <div v-for="action in actions" class="add-action-window__action" @click="selectAction(action)">
-            <div class="add-action-window__name-block">
-              <span class="add-action-window__label">Назва:</span>
-              <span class="add-action-window__name">{{ action.method }}</span>
-            </div>
-            <div class="add-action-window__description">{{ action.description }}</div>
-            <div v-if="action.params" class="add-action-window__params">
-              <div v-for="parameter in action.params" class="add-action-window__action-parameter">
-                <div class="add-action-window__name-block">
-                  <span class="add-action-window__name">{{ parameter.name }}</span>
-                  <span class="add-action-window__parameter-type">({{ parameter.type.name }})</span>
-                </div>
-                <div class="add-action-window__description">{{ parameter.description }}</div>
-              </div>
-            </div>
-          </div>
+          <ActionBlock v-for="action in actions" :key="action.action" :action="action" @selectAction="selectAction"/>
         </div>
       </div>
     </div>
@@ -36,11 +21,13 @@
 <script>
   import Quest from '../resources/entities/Quest';
   import AddParamsWindow from './AddParamsWindow';
+  import ActionBlock from './ActionBlock';
 
   export default {
     name: "AddActionWindow",
     components: {
       AddParamsWindow,
+      ActionBlock,
     },
     props: {
       quest: {
@@ -61,17 +48,19 @@
     },
 
     methods: {
-      addAction(action) {
+      addAction(actionData) {
+        const action = Object.assign({}, actionData);
+        delete action.description;
         this.$emit('onActionSelect', action);
       },
 
-      selectAction(action) {
-        this.action = action;
+      selectAction(actionData) {
+        this.action = actionData;
 
-        if (action.params) {
+        if (actionData.params) {
           this.showAddParamsWindow = true;
         } else {
-          this.addAction(action);
+          this.addAction(actionData);
         }
       },
 
@@ -83,8 +72,9 @@
 </script>
 
 <style lang="scss">
-
   .add-action-window {
+    position: relative;
+    z-index: 1;
 
     &__overlay {
       position: fixed;
@@ -105,68 +95,13 @@
       border-radius: 5px;
       display: flex;
       flex-direction: column;
+      min-width: 750px;
     }
 
     &__content {
       max-height: calc(100vh - 135px);
       overflow: auto;
       padding-right: 5px;
-    }
-
-    &__action {
-      background: rgba(96,125,139 ,.2);
-      margin-bottom: 10px;
-      padding: 10px;
-      border-radius: 5px;
-      transition: background .375s;
-      cursor: pointer;
-      position: relative;
-
-      &::after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 1px;
-        left: 0;
-        bottom: -5px;
-        background: rgba(255, 255, 255, .6);
-      }
-
-      &:hover {
-        background: rgba(96,125,139 ,.8);
-      }
-    }
-
-    &__name-block {
-      display: flex;
-    }
-
-    &__label {
-      margin-right: 8px;
-      font-weight: 300;
-    }
-
-    &__name {
-      font-weight: 600;
-      font-size: 16px;
-    }
-
-    &__description {
-      padding: 5px;
-      background: rgba(238,238,238 ,.2);
-      margin: 5px 0;
-      border-radius: 5px;
-    }
-
-    &__params {
-      padding: 10px;
-      border-radius: 10px;
-      background: rgba(238,238,238 ,.2);
-      margin-bottom: 10px;
-    }
-
-    &__parameter-type {
-      margin-left: 10px;
     }
   }
 </style>

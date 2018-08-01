@@ -8,6 +8,7 @@ import Button             from './components/ui/Button';
 import Icon               from './components/ui/Icon';
 import DropDown           from './components/ui/DropDown';
 import Popup              from './components/ui/Popup';
+import Spinner            from './components/ui/Spinner';
 import NotificationCenter from './components/ui/NotificationCenter';
 import './assets/styles/global.scss';
 import logger             from './logger';
@@ -28,6 +29,7 @@ Vue.component('Button', Button);
 Vue.component('Icon', Icon);
 Vue.component('DropDown', DropDown);
 Vue.component('Popup', Popup);
+Vue.component('Spinner', Spinner);
 Vue.component('NotificationCenter', NotificationCenter);
 
 new Vue({

@@ -28,7 +28,7 @@
               <div class="popup__overlay">
                 <div class="popup__content">
                   <div class="about__commit-wrapper">
-                    <div v-for="commit in versionInfo" class="about__commit">
+                    <div v-for="commit in versionInfo" :key="commit.sha" class="about__commit">
                       <div class="about__commit-content">{{ commit.commit.message }}</div>
                       * * * * * * * * * * * * * * *  * * * * * *
                     </div>
@@ -50,13 +50,10 @@
   import axios from 'axios';
   import client from '../../package';
   import server from '../../../server/package';
-  import Spinner from '../components/ui/Spinner';
+  import $events from '../utils/events';
 
   export default {
     name: 'About',
-    components: {
-      Spinner,
-    },
     props: {
       popup: {
         type: Boolean,
@@ -88,7 +85,10 @@
           })
           .catch((error) => {
             this.showLoader = false;
-            console.error(error);
+            this.$logger.log(error, 'error');
+            $events.$emit('showNotification', {
+              title: 'Сталась помилка під час завантаження комітів.',
+            });
           });
       }
     }
