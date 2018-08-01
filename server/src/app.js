@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
     }]
   )
 });
-app.get('/maps/', (req, res) => {
+app.get('/maps', (req, res) => {
   readFilesSync(
     './resources/maps',
     (files) => {
@@ -26,19 +26,44 @@ app.get('/maps/', (req, res) => {
     }
   );
 });
+app.get('/quests', (req, res) => {
+  readFilesSync(
+    './resources/quests',
+    (files) => {
+      res.send(files);
+    }
+  );
+});
 app.post('/saveMap', (req, res) => {
+  if (!fs.existsSync('./resources/maps')) {
+    fs.mkdirSync('./resources/maps');
+  }
+
   fs.writeFile(`./resources/maps/${req.body.name}.json`, JSON.stringify(req.body.content), 'utf8', (err) => {
     if (err) {
       console.error(err);
     }
 
-    res.send('The file has been saved!');
+    res.send('The map has been saved!');
+  });
+});
+app.post('/saveQuest', (req, res) => {
+  if (!fs.existsSync('./resources/quests')) {
+    fs.mkdirSync('./resources/quests');
+  }
+
+  fs.writeFile(`./resources/quests/${req.body.name}.json`, JSON.stringify(req.body.content), 'utf8', (err) => {
+    if (err) {
+      console.error(err);
+    }
+
+    res.send('The quest has been saved!');
   });
 });
 
 
 app.post('/start', (req, res) => {
-  if (!fs.existsSync('./logs')){
+  if (!fs.existsSync('./logs')) {
     fs.mkdirSync('./logs');
   }
 
