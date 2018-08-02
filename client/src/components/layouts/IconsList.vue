@@ -2,11 +2,11 @@
   <div class="icons-list">
     <div class="icons-list__toolbar">
       <router-link to="/" class="nav-link">
-        <Button :squash="true" class="about__button" :text="$t('Routes.Home')" size="small" type="white">
-          <Icon slot="before" size="small" type="castle"></Icon>
+        <Button :rectangular="true" class="about__button" :text="$t('Routes.Home')" size="small" type="white">
+          <Icon slot="before" size="tiny" type="castle"></Icon>
         </Button>
       </router-link>
-      <DropDown :items="sizes" :squash="false" size="small" class="icons-list__select" @select="selectSize" />
+      <DropDown :items="sizes" size="small" class="icons-list__select" @select="selectSize" />
     </div>
     <Button v-for="icon in icons" :key="icon" :title="icon" class="icons-list" :squash="true" type="transparent">
       <Icon slot="before" :size="size" :type="icon"></Icon>

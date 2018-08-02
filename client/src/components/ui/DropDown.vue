@@ -1,6 +1,6 @@
 <template>
   <div class="drop-down">
-    <Button @buttonClick="openDropDown" :text="label" :size="size" :squash="squash" type="white" class="drop-down__button">
+    <Button @buttonClick="openDropDown" :rectangular="true" :text="label" :size="size" :squash="squash" type="white" class="drop-down__button">
       <Icon slot="after" type="select_arrow_down" size="tiny" class="drop-down__arrow"></Icon>
     </Button>
     <ul :class="{ 'drop-down__items-wrapper': true, 'drop-down__items-wrapper--visible': show }">
