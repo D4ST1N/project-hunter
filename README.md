@@ -11,6 +11,7 @@ To start project:
 
 
 And then
+
 `cd ../client`
 
 `npm i`
